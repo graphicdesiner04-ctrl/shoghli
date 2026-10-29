@@ -583,6 +583,18 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .mgrid { grid-template-rows: auto repeat(6, minmax(64px, auto)); }
   .mchip span { display: none; }
 }
+/* desktop: أقل زحمة */
+@media (min-width: 981px) {
+  .add:not(:focus-within) > :not(input[type="text"]):not(.plus):not(.primary) { display: none; }
+  .week { gap: 8px; padding-top: 14px; }
+  .day { min-height: 58px; padding: 7px 12px; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 0 8px; }
+  .day .d1 { flex: 1; }
+  .day .d2 { font-size: 20px; }
+  .day .marks { flex-basis: 100%; margin-top: 2px; }
+  .card [data-later-id]:not(.later) { opacity: 0; transition: opacity .15s; }
+  .card:hover [data-later-id], .card:focus-within [data-later-id] { opacity: 1; }
+}
+
 /* phone */
 @media (max-width: 640px) {
   body { padding-bottom: env(safe-area-inset-bottom); }
