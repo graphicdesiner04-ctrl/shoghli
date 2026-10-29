@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>ابعت تاسك</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="icon.png">
+<meta name="theme-color" content="#221E4A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Alexandria:wght@600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600&display=swap">
+<style>
+:root {
+  --side: #221E4A; --surface: #FFFFFF; --canvas: #F2F1F8; --ink: #1D1A3A; --muted: #6A6789; --line: #DFDCEE;
+  --action: #4A3FD1; --action-soft: #ECEAFD; --late: #E5484D; --ok: #0F8F79; --ok-soft: #E3F6F1; --sun: #FFB547;
+  --display: "Alexandria", "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
+  --body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root { --side: #0F0D22; --surface: #1F1C3B; --canvas: #15132B; --ink: #ECEAFB; --muted: #A3A0C7; --line: #302C55;
+    --action: #8B83FF; --action-soft: #2A2658; --late: #FF7A7F; --ok: #3DD6B5; --ok-soft: #173B3A; color-scheme: dark; }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; min-height: 100%; }
+body {
+  background: var(--side); color: var(--ink); font: 16px/1.55 var(--body);
+  display: grid; place-items: center; padding: calc(24px + env(safe-area-inset-top)) 16px calc(24px + env(safe-area-inset-bottom));
+}
+button, input, textarea { font: inherit; color: inherit; }
+:focus-visible { outline: 2px solid var(--action); outline-offset: 2px; }
+.card { width: min(460px, 100%); background: var(--surface); border-radius: 22px; padding: 26px 22px 22px; box-shadow: 0 16px 40px rgba(0, 0, 0, .3); }
+.brand { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+.brand svg { width: 34px; height: 34px; }
+.brand span { font: 800 18px/1 var(--display); color: var(--muted); }
+h1 { margin: 0 0 4px; font: 700 23px/1.35 var(--display); }
+.lead { margin: 0 0 18px; color: var(--muted); font-size: 15px; }
+form { display: flex; flex-direction: column; gap: 14px; }
+.field { display: flex; flex-direction: column; gap: 5px; }
+label { font-size: 14px; color: var(--muted); font-weight: 500; }
+label small { font-weight: 400; }
+input, textarea { min-height: 46px; padding: 8px 12px; border: 1px solid var(--line); border-radius: 12px; background: var(--canvas); width: 100%; }
+input:focus, textarea:focus { outline: none; border-color: var(--action); box-shadow: 0 0 0 3px var(--action-soft); }
+textarea { min-height: 96px; resize: vertical; }
+.primary { min-height: 50px; border: 0; border-radius: 12px; background: var(--action); color: #fff; font-weight: 600; font-size: 16px; cursor: pointer; }
+.primary:disabled { opacity: .6; cursor: wait; }
+.err { margin: 0; color: var(--late); font-size: 14px; }
+.err:empty { display: none; }
+.done { text-align: center; padding: 10px 0 4px; }
+.done .ic { width: 64px; height: 64px; border-radius: 50%; background: var(--ok-soft); color: var(--ok); display: grid; place-items: center; margin: 0 auto 12px; }
+.done .ic svg { width: 32px; height: 32px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+.done h1 { margin-bottom: 6px; }
+.ghost { min-height: 46px; padding: 0 18px; border: 1px solid var(--line); border-radius: 12px; background: transparent; cursor: pointer; margin-top: 14px; }
+.foot { margin: 16px 0 0; text-align: center; font-size: 13px; color: var(--muted); }
+[hidden] { display: none !important; }
+</style>
+</head>
+<body>
+<main class="card">
+  <div class="brand">
+    <svg viewBox="0 0 36 36" aria-hidden="true">
+      <rect width="36" height="36" rx="10" fill="#4A3FD1"/>
+      <rect x="22" y="8" width="6" height="20" rx="3" fill="#2F80ED"/>
+      <rect x="15" y="8" width="6" height="14" rx="3" fill="#C26BF0"/>
+      <rect x="8" y="8" width="6" height="9" rx="3" fill="#12C9A8"/>
+      <circle cx="11" cy="25" r="3" fill="#FFB547"/>
+    </svg>
+    <span>شغلي</span>
+  </div>
+
+  <section id="formView" hidden>
+    <h1 id="title">ابعت تاسك</h1>
+    <p class="lead">اكتب المطلوب، وهيوصل على طول. هيظهرله اسمك عشان يعرف مين بعته.</p>
+    <form id="f" novalidate>
+      <div class="field"><label for="from">اسمك</label><input id="from" maxlength="80" autocomplete="name" required></div>
+      <div class="field"><label for="task">المطلوب</label><input id="task" maxlength="300" required placeholder="مثلاً: بوستر لعرض الجمعة"></div>
+      <div class="field"><label for="notes">تفاصيل <small>(اختياري)</small></label><textarea id="notes" maxlength="2000" placeholder="المقاسات، الألوان، لينكات، أي حاجة مهمة…"></textarea></div>
+      <div class="field"><label for="due">محتاجه إمتى؟ <small>(اختياري)</small></label><input id="due" type="date"></div>
+      <p class="err" id="err" role="alert"></p>
+      <button class="primary" type="submit" id="go">ابعت التاسك</button>
+    </form>
+  </section>
+
+  <section id="doneView" class="done" hidden role="status">
+    <div class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg></div>
+    <h1>وصل</h1>
+    <p class="lead" id="doneTxt"></p>
+    <button class="ghost" id="again" type="button">ابعت تاسك تاني</button>
+  </section>
+
+  <section id="badView" hidden>
+    <h1>اللينك ده مش شغال</h1>
+    <p class="lead">ممكن يكون اتغير. اطلب اللينك الجديد من الشخص اللي بعتهولك.</p>
+  </section>
+
+  <p class="foot">بعد ما تبعت مش هتقدر تشوف أو تعدّل التاسك.</p>
+</main>
+
+<script>
+const SB_URL = 'https://lsomwuggikpynolzqtci.supabase.co';
+const SB_KEY = 'sb_publishable_lYf1I9aMmLO1HnRyozy2pA_nfR3Vslb';
+const $ = s => document.querySelector(s);
+const code = new URLSearchParams(location.search).get('u') || '';
+let owner = '';
+
+const rpc = (fn, body) => fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
+  method: 'POST', headers: { apikey: SB_KEY, 'Content-Type': 'application/json' }, body: JSON.stringify(body),
+});
+
+(async () => {
+  if (!/^[0-9a-f]{6,32}$/.test(code)) return ($('#badView').hidden = false);
+  try {
+    const r = await rpc('inbox_owner', { p_code: code });
+    owner = await r.json();
+    if (owner === null) return ($('#badView').hidden = false);
+  } catch { owner = ''; }
+  if (owner) { $('#title').textContent = `ابعت تاسك لـ${owner}`; document.title = `ابعت تاسك لـ${owner}`; }
+  try { $('#from').value = localStorage.getItem('shoghli-from') || ''; } catch {}
+  $('#formView').hidden = false;
+  ($('#from').value ? $('#task') : $('#from')).focus();
+})();
+
+$('#f').addEventListener('submit', async e => {
+  e.preventDefault();
+  const from = $('#from').value.trim(), title = $('#task').value.trim();
+  $('#err').textContent = '';
+  if (!from) { $('#err').textContent = 'اكتب اسمك عشان يعرف مين بعت.'; return $('#from').focus(); }
+  if (!title) { $('#err').textContent = 'اكتب المطلوب.'; return $('#task').focus(); }
+  $('#go').disabled = true; $('#go').textContent = 'بيتبعت…';
+  try {
+    const r = await rpc('submit_inbox', { p_code: code, p_from: from, p_title: title, p_notes: $('#notes').value.trim() || null, p_due: $('#due').value || null });
+    const body = await r.json().catch(() => null);
+    if (!r.ok) throw new Error(JSON.stringify(body));
+    if (body === false) { $('#formView').hidden = true; $('#badView').hidden = false; return; }
+    try { localStorage.setItem('shoghli-from', from); } catch {}
+    $('#doneTxt').textContent = `التاسك "${title}" وصل${owner ? ` لـ${owner}` : ''}.`;
+    $('#formView').hidden = true; $('#doneView').hidden = false;
+  } catch (err) {
+    $('#err').textContent = /rate_limited/.test(err.message)
+      ? 'اتبعت تاسكات كتير الساعة دي. جرب تاني بعد شوية.'
+      : 'ماتبعتش. اتأكد إن النت شغال وجرب تاني.';
+  }
+  $('#go').disabled = false; $('#go').textContent = 'ابعت التاسك';
+});
+
+$('#again').addEventListener('click', () => {
+  $('#task').value = ''; $('#notes').value = ''; $('#due').value = '';
+  $('#doneView').hidden = true; $('#formView').hidden = false; $('#task').focus();
+});
+</script>
+</body>
+</html>

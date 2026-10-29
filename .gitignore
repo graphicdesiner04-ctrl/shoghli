@@ -1,0 +1,12 @@
+# Only the web app goes to GitHub. Personal data (data.json, backups, device.json,
+# notify-state.json) and the laptop-only files stay on this machine.
+/*
+!/.gitignore
+!/index.html
+!/send.html
+!/sw.js
+!/manifest.webmanifest
+!/icon.png
+!/icon-192.png
+!/icon-512.png
+!/icon-maskable.png
