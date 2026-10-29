@@ -94,7 +94,7 @@ textarea { min-height: 96px; resize: vertical; }
     <p class="lead">ممكن يكون اتغير. اطلب اللينك الجديد من الشخص اللي بعتهولك.</p>
   </section>
 
-  <p class="foot">بعد ما تبعت مش هتقدر تشوف أو تعدّل التاسك.</p>
+  <p class="foot" id="foot" hidden>بعد ما تبعت مش هتقدر تشوف أو تعدّل التاسك.</p>
 </main>
 
 <script>
@@ -118,6 +118,7 @@ const rpc = (fn, body) => fetch(`${SB_URL}/rest/v1/rpc/${fn}`, {
   if (owner) { $('#title').textContent = `ابعت تاسك لـ${owner}`; document.title = `ابعت تاسك لـ${owner}`; }
   try { $('#from').value = localStorage.getItem('shoghli-from') || ''; } catch {}
   $('#formView').hidden = false;
+  $('#foot').hidden = false;
   ($('#from').value ? $('#task') : $('#from')).focus();
 })();
 
@@ -132,7 +133,7 @@ $('#f').addEventListener('submit', async e => {
     const r = await rpc('submit_inbox', { p_code: code, p_from: from, p_title: title, p_notes: $('#notes').value.trim() || null, p_due: $('#due').value || null });
     const body = await r.json().catch(() => null);
     if (!r.ok) throw new Error(JSON.stringify(body));
-    if (body === false) { $('#formView').hidden = true; $('#badView').hidden = false; return; }
+    if (body === false) { $('#formView').hidden = true; $('#foot').hidden = true; $('#badView').hidden = false; return; }
     try { localStorage.setItem('shoghli-from', from); } catch {}
     $('#doneTxt').textContent = `التاسك "${title}" وصل${owner ? ` لـ${owner}` : ''}.`;
     $('#formView').hidden = true; $('#doneView').hidden = false;
