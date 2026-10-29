@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, interactive-widget=resizes-content">
 <title>شغلي</title>
 <link rel="icon" href="icon.png">
 <link rel="manifest" href="manifest.webmanifest">
@@ -426,6 +426,7 @@ dialog {
 dialog.wide { width: min(820px, calc(100vw - 32px)); }
 dialog[open] { animation: pop .18s cubic-bezier(.2, .8, .2, 1); }
 @keyframes pop { from { opacity: 0; transform: translateY(8px) scale(.98); } }
+@keyframes sheet { from { transform: translateY(48px); opacity: .5; } }
 dialog::backdrop { background: rgba(21, 19, 43, .5); }
 .dlg { padding: 22px 24px 22px; display: flex; flex-direction: column; gap: 14px; }
 .dlg h2 { margin: 0; font: 700 19px/1.35 var(--display); }
@@ -583,6 +584,27 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .mgrid { grid-template-rows: auto repeat(6, minmax(64px, auto)); }
   .mchip span { display: none; }
 }
+/* دايرة خلّصه */
+.t-row, .row { --tick: 22px; }
+.t-row { display: flex; align-items: flex-start; gap: 10px; }
+.t-row .t { flex: 1; padding-top: 1px; }
+.tick {
+  flex: none; width: var(--tick); height: var(--tick); margin: 1px 0; padding: 0;
+  display: grid; place-items: center; border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--c, var(--muted)) 55%, var(--line)); background: transparent; color: transparent;
+  position: relative; transition: background-color .15s, border-color .15s, color .15s;
+}
+.tick::after { content: ""; position: absolute; inset: -10px; } /* مساحة دوس أكبر من الدايرة */
+.tick .i { width: 13px; height: 13px; stroke-width: 3; }
+.tick:hover { border-color: var(--ok); color: var(--ok); }
+.tick.on { background: var(--ok); border-color: var(--ok); color: #fff; }
+.col-tabs, .fab, .scrim { display: none; }
+* { -webkit-tap-highlight-color: transparent; }
+@media (hover: none) {
+  button:active, .card:active, .row:active { transform: scale(.97); }
+  button, .card, .row { transition: transform .1s; }
+}
+
 /* desktop: أقل زحمة */
 @media (min-width: 981px) {
   .add:not(:focus-within) > :not(input[type="text"]):not(.plus):not(.primary) { display: none; }
@@ -638,15 +660,54 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .add input[type="date"] { flex: 1; min-width: 0; }
   .add .primary { flex: 1; }
   main { padding: 12px 12px calc(84px + env(safe-area-inset-bottom)); }
-  .board { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; height: auto; padding-bottom: 6px; }
-  .col { flex: 0 0 88%; scroll-snap-align: center; max-height: calc(100vh - 300px); min-height: 320px; }
+  /* تابات الأعمدة: عمود واحد في المرة */
+  .col-tabs { display: flex; gap: 6px; margin-bottom: 10px; }
+  .col-tabs button {
+    flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+    min-height: 44px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); font-weight: 500; font-size: 14px;
+  }
+  .col-tabs button .i { width: 17px; height: 17px; }
+  .col-tabs button span { font: 600 12px/20px var(--display); padding: 0 7px; border-radius: 999px; background: var(--sunken); color: var(--muted); }
+  .col-tabs button[aria-selected="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+  .col-tabs button[aria-selected="true"] span { background: rgba(255, 255, 255, .2); color: inherit; }
+  .board { display: block; height: auto; }
+  .board[data-active] .col { display: none; }
+  .board[data-active="todo"] .col[data-col="todo"], .board[data-active="doing"] .col[data-col="doing"], .board[data-active="done"] .col[data-col="done"] { display: flex; }
+  .col { background: transparent; }
+  .col-h { padding: 0 2px 8px; }
+  .col-h h3 { display: none; }
+  .col-h:not(:has(button)) { display: none; }
+  .list { padding: 0; overflow: visible; }
+  /* زرار + عايم، والإضافة بتطلع كلوح من تحت */
+  .fab {
+    display: grid; place-items: center; position: fixed; z-index: 10;
+    inset-inline-end: 16px; bottom: calc(80px + env(safe-area-inset-bottom));
+    width: 58px; height: 58px; border: 0; border-radius: 18px;
+    background: var(--action); color: var(--action-ink); box-shadow: 0 8px 20px color-mix(in srgb, var(--action) 45%, transparent);
+  }
+  .fab .i { width: 26px; height: 26px; stroke-width: 2.4; }
+  .add-wrap { display: none; }
+  body.adding .add-wrap {
+    display: block; position: fixed; z-index: 14; inset-inline: 0; bottom: 0; margin: 0;
+    padding: 14px 12px calc(14px + env(safe-area-inset-bottom)); background: var(--surface);
+    border-radius: 22px 22px 0 0; box-shadow: var(--lift); animation: sheet .22s cubic-bezier(.2, .8, .2, 1);
+  }
+  body.adding .add { border: 0; box-shadow: none; padding: 0; }
+  body.adding .scrim { display: block; position: fixed; inset: 0; z-index: 13; background: rgba(21, 19, 43, .45); }
+  body.adding .fab { display: none; }
   .stat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   .stat .v { font-size: 24px; }
   .money { grid-template-columns: 1fr; }
   .month-h { flex-wrap: wrap; }
   .month-h h3 { min-width: 0; flex: 1; }
   .month-h .hint { display: none; }
-  dialog, dialog.wide { width: calc(100vw - 16px); max-height: calc(100vh - 24px); }
+  /* الشبابيك بتطلع من تحت زي تطبيقات أندرويد */
+  dialog, dialog.wide {
+    width: 100vw; max-width: 100vw; max-height: 92vh; margin: auto 0 0;
+    border-radius: 22px 22px 0 0; border-bottom: 0; padding-bottom: env(safe-area-inset-bottom);
+  }
+  dialog[open] { animation: sheet .24s cubic-bezier(.2, .8, .2, 1); }
+  .row .t { flex-basis: 140px; }
   .task-main, .task-side, .dlg { padding: 18px 16px; }
   .task-foot { padding: 12px 16px; flex-wrap: wrap; }
   .task-foot .hint { flex-basis: 100%; }
@@ -821,6 +882,8 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
 
   <main id="main"></main>
 </div>
+<button class="fab" id="fab" type="button" aria-label="تاسك جديد"><svg class="i"><use href="#ic-plus"/></svg></button>
+<div class="scrim" id="scrim"></div>
 
 <!-- edit task -->
 <dialog id="taskDlg" class="wide" aria-labelledby="fTitleLbl">
@@ -1614,6 +1677,8 @@ function moveBtn(t) {
 const prioHtml = t => t.prio === 2 ? '<span class="prio">مستعجل</span>' : t.prio === 1 ? '<span class="prio p1">مهم</span>' : '';
 const repeatHtml = t => t.repeat ? `<span class="mini" title="${REPEAT[t.repeat]}">${icon('repeat')}${REPEAT[t.repeat]}</span>` : '';
 const priceHtml = t => t.price ? `<span class="mini ${t.paid ? 'paid' : ''}" title="${t.paid ? 'اتقبض' : 'لسه ما اتقبضش'}">${icon(t.paid ? 'check' : 'coin')}${money(t.price)}</span>` : '';
+// دايرة "خلّصه" بدوسة واحدة، من أي حالة
+const tickHtml = t => `<button class="tick ${t.status === 'done' ? 'on' : ''}" data-tick="${t.id}" aria-label="${t.status === 'done' ? 'رجّعه لسه' : 'خلّصه'}" title="${t.status === 'done' ? 'رجّعه لسه' : 'خلّصه'}">${icon('check')}</button>`;
 const fromHtml = t => t.from ? `<span class="from" title="بعتهولك ${esc(t.from)}">${icon('user')}${esc(t.from)}</span>` : '';
 function stepsHtml(t) {
   const cl = t.checklist || [];
@@ -1628,7 +1693,7 @@ function cardHtml(t) {
   return `
     <article class="card ${t.status === 'done' ? 'done' : ''}" draggable="true" data-id="${t.id}" style="--c:${w.color}" tabindex="0">
       ${top.trim() ? `<div class="card-top">${top}</div>` : ''}
-      <p class="t">${esc(t.title)}</p>
+      <div class="t-row">${tickHtml(t)}<p class="t">${esc(t.title)}</p></div>
       ${t.notes ? `<p class="notes">${esc(t.notes)}</p>` : ''}
       ${stepsHtml(t)}
       <div class="meta">
@@ -1645,7 +1710,10 @@ function renderBoard() {
     doing: 'لما تبدأ في تاسك دوس "ابدأ" أو اسحبه هنا.',
     done: 'التاسكات اللي تخلصها هتنزل هنا.',
   };
-  $('#main').innerHTML = `<div class="board">${Object.keys(STATUS).map(s => {
+  // على الموبايل: تابات للأعمدة بدل السحب للجنب
+  const active = ui.col || 'todo';
+  const tabs = `<div class="col-tabs" role="tablist">${Object.keys(STATUS).map(s => `<button role="tab" data-coltab="${s}" aria-selected="${s === active}">${icon(s)}${STATUS[s]}<span>${tasks.filter(t => t.status === s).length}</span></button>`).join('')}</div>`;
+  $('#main').innerHTML = tabs + `<div class="board" data-active="${active}">${Object.keys(STATUS).map(s => {
     const list = tasks.filter(t => t.status === s).sort(s === 'done' ? (a, b) => (b.doneAt || 0) - (a.doneAt || 0) : byOrder);
     return `
       <section class="col" data-col="${s}">
@@ -1661,7 +1729,7 @@ function renderBoard() {
 function rowHtml(t) {
   const w = wsOf(t.ws), d = dueInfo(t), cl = t.checklist || [];
   return `<div class="row" data-id="${t.id}" style="--c:${w.color}" tabindex="0" role="button">
-    <span class="dotc"></span>
+    ${tickHtml(t)}<span class="dotc"></span>
     <span class="t">${esc(t.title)}</span>
     ${ui.ws === 'all' ? tagHtml(w) : ''}
     ${t.status === 'doing' ? '<span class="status-pill">شغال فيه</span>' : ''}
@@ -2005,11 +2073,12 @@ function setStatus(t, s) {
     delete t.spawned;
   }
 }
-function moveTask(id) {
+function moveTask(id, to) {
   const t = db.tasks.find(x => x.id === id);
   if (!t) return;
   const prev = t.status;
-  setStatus(t, NEXT[t.status][0]);
+  setStatus(t, to || NEXT[t.status][0]);
+  if (t.status === 'done') navigator.vibrate?.(12);
   const spawn = lastSpawn;
   save(); render();
   const msg = t.status === 'done'
@@ -2089,6 +2158,13 @@ $('#addForm').addEventListener('submit', e => {
   $('#addTitle').focus();
 });
 
+// الموبايل: زرار + بيفتح الإضافة كلوح من تحت
+const closeAdd = () => document.body.classList.remove('adding');
+$('#fab').addEventListener('click', () => { document.body.classList.add('adding'); $('#addTitle').focus(); });
+$('#scrim').addEventListener('click', closeAdd);
+$('#addForm').addEventListener('submit', () => setTimeout(closeAdd, 0));
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdd(); });
+
 /* nav */
 $('#spaces').addEventListener('click', e => {
   const b = e.target.closest('[data-ws]'); if (!b) return;
@@ -2109,6 +2185,10 @@ $('#q').addEventListener('input', e => { ui.q = e.target.value.trim(); render();
 
 /* main area clicks */
 $('#main').addEventListener('click', e => {
+  const tk = e.target.closest('[data-tick]');
+  if (tk) { const t = db.tasks.find(x => x.id === tk.dataset.tick); return moveTask(t.id, t.status === 'done' ? 'todo' : 'done'); }
+  const ct = e.target.closest('[data-coltab]');
+  if (ct) { ui.col = ct.dataset.coltab; return render(); }
   const ac = e.target.closest('[data-accept]');
   if (ac) return decideInbox(ac.dataset.accept, true);
   const rj = e.target.closest('[data-reject]');
