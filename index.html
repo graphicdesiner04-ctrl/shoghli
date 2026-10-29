@@ -1104,6 +1104,9 @@ async function pull() {
     migrate();
     writeCache(); render();
     await push();
+    // أول دخول على اللاب: لو الحساب اتعمل من جهاز تاني، نضيف تاسكات اللاب القديمة
+    const importedKey = `shoghli-imported-${user.id}`;
+    if (IS_LOCAL && !localStorage.getItem(importedKey)) { await importLocal(true); localStorage.setItem(importedKey, '1'); }
   } catch (e) {
     console.warn('pull failed', e);
     setSync(navigator.onLine ? 'error' : 'offline');
@@ -1164,7 +1167,7 @@ function save() {
 // أول دخول: نرفع اللي كان على الجهاز (ملف اللاب أو نسخة المتصفح)
 async function firstImport() {
   let src = null;
-  if (IS_LOCAL) { try { const r = await fetch('/api/data', { cache: 'no-store' }); if (r.ok) src = await r.json(); } catch {} }
+  if (IS_LOCAL) { try { const r = await fetch('/api/data?pre=1', { cache: 'no-store' }); if (r.ok) src = await r.json(); } catch {} }
   if (!src) src = readLocal();
   db = src && Array.isArray(src.tasks) && Array.isArray(src.workspaces) ? src : structuredClone(DEFAULT);
   snap = { tasks: {}, workspaces: {}, settings: null };
@@ -1173,16 +1176,17 @@ async function firstImport() {
   await push();
   if (src?.tasks?.length) toast(`اتنقلت ${src.tasks.length} تاسك من الجهاز ده لحسابك`);
 }
-// زرار في الإعدادات: يضيف اللي على اللاب ومش موجود في الحساب
-async function importLocal() {
+// يضيف اللي كان على اللاب قبل السحابة ومش موجود في الحساب (زرار في الإعدادات، وبيشتغل لوحده أول مرة على اللاب)
+async function importLocal(quiet) {
   let src = null;
-  try { const r = await fetch('/api/data', { cache: 'no-store' }); if (r.ok) src = await r.json(); } catch {}
-  if (!src?.tasks) return toast('مالقيتش بيانات قديمة على اللاب ده.');
+  try { const r = await fetch('/api/data?pre=1', { cache: 'no-store' }); if (r.ok) src = await r.json(); } catch {}
+  if (!src?.tasks) return quiet || toast('مالقيتش بيانات قديمة على اللاب ده.');
   let n = 0;
   for (const w of src.workspaces || []) if (!db.workspaces.some(x => x.id === w.id)) { db.workspaces.push({ ...w, sort: db.workspaces.length }); }
   for (const t of src.tasks) if (!db.tasks.some(x => x.id === t.id)) { db.tasks.push(t); n++; }
-  migrate(); save(); render();
-  toast(n ? `اتضاف ${n} تاسك من اللاب` : 'كل تاسكات اللاب موجودة في حسابك بالفعل');
+  if (n || !quiet) { migrate(); save(); render(); }
+  if (n) toast(`اتضاف ${n} تاسك من اللاب لحسابك`);
+  else if (!quiet) toast('كل تاسكات اللاب موجودة في حسابك بالفعل');
 }
 
 function subscribe() {
@@ -2336,7 +2340,7 @@ $('#logoutBtn').addEventListener('click', async () => {
   await push();
   await sb.auth.signOut();
 });
-$('#importLocalBtn').addEventListener('click', importLocal);
+$('#importLocalBtn').addEventListener('click', () => importLocal(false));
 
 // تنزيل كبرنامج (أندرويد وكروم وإيدج)
 let installEvt = null;
