@@ -604,8 +604,19 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .tools { width: 100%; }
   .search { flex: 1; }
   .search input { width: 100%; }
-  .seg { width: 100%; overflow-x: auto; }
-  .seg button { flex: 1; justify-content: center; padding: 0 8px; }
+  /* العروض في شريط تحت قريب من الصباع */
+  .seg {
+    position: fixed; inset-inline: 0; bottom: 0; z-index: 9; width: auto;
+    border-radius: 0; padding: 6px 8px calc(6px + env(safe-area-inset-bottom));
+    background: var(--surface); border-top: 1px solid var(--line); box-shadow: 0 -4px 16px rgba(29, 26, 58, .08);
+  }
+  .seg button { flex: 1; flex-direction: column; gap: 2px; min-height: 52px; padding: 4px 2px; font-size: 12px; justify-content: center; }
+  .seg button .i { width: 22px; height: 22px; }
+  .seg button[aria-pressed="true"] { background: var(--action-soft); color: var(--action); box-shadow: none; }
+  /* الإضافة: خانة الكتابة بس، والباقي يظهر لما تدوس عليها */
+  .add:not(:focus-within) > :not(input[type="text"]):not(.plus) { display: none; }
+  .add:not(:focus-within) .plus { display: grid; }
+  .move { min-height: 40px; padding: 0 12px; }
   .week { display: flex; overflow-x: auto; padding: 12px 12px 0; gap: 8px; scroll-snap-type: x proximity; scrollbar-width: none; }
   .day { flex: 0 0 96px; min-height: 70px; scroll-snap-align: start; }
   .add-wrap { margin: 12px 12px 0; }
@@ -614,7 +625,7 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .add select { flex: 1; }
   .add input[type="date"] { flex: 1; min-width: 0; }
   .add .primary { flex: 1; }
-  main { padding: 12px 12px calc(20px + env(safe-area-inset-bottom)); }
+  main { padding: 12px 12px calc(84px + env(safe-area-inset-bottom)); }
   .board { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 12px; height: auto; padding-bottom: 6px; }
   .col { flex: 0 0 88%; scroll-snap-align: center; max-height: calc(100vh - 300px); min-height: 320px; }
   .stat-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
@@ -628,7 +639,7 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .task-foot { padding: 12px 16px; flex-wrap: wrap; }
   .task-foot .hint { flex-basis: 100%; }
   .grid2 { grid-template-columns: 1fr; }
-  .toast { bottom: calc(16px + env(safe-area-inset-bottom)); }
+  .toast { bottom: calc(80px + env(safe-area-inset-bottom)); }
 }
 @media (prefers-reduced-motion: reduce) { *, *::before { transition: none !important; animation: none !important; } }
 </style>
