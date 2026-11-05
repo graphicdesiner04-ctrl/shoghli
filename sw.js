@@ -1,5 +1,5 @@
 // شغلي: يخلي البرنامج يفتح حتى من غير نت. الصفحة نفسها بتتجاب من النت الأول عشان التحديثات توصل
-const CACHE = 'shoghli-v1';
+const CACHE = 'shoghli-v2';
 const SHELL = ['./', './index.html', './manifest.webmanifest', './icon.png', './icon-192.png', './icon-512.png',
   'https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js'];
 

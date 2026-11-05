@@ -15,7 +15,14 @@
     { "src": "icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
     { "src": "icon-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
   ],
+  "share_target": {
+    "action": "./",
+    "method": "GET",
+    "enctype": "application/x-www-form-urlencoded",
+    "params": { "title": "share_title", "text": "share_text", "url": "share_url" }
+  },
   "shortcuts": [
+    { "name": "المحفوظات", "url": "./#links", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
     { "name": "الوارد", "url": "./#inbox", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] },
     { "name": "الشهر", "url": "./#month", "icons": [{ "src": "icon-192.png", "sizes": "192x192" }] }
   ]

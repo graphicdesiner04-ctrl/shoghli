@@ -584,6 +584,50 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .mgrid { grid-template-rows: auto repeat(6, minmax(64px, auto)); }
   .mchip span { display: none; }
 }
+/* المحفوظات */
+body[data-view="links"] .week, body[data-view="links"] .add-wrap { display: none !important; }
+.links { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.lk-add {
+  display: flex; align-items: center; gap: 8px; padding: 8px 8px 8px 8px;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow);
+}
+.lk-add > .i { color: var(--action); margin-inline-start: 8px; }
+.lk-add:focus-within { border-color: var(--action); box-shadow: 0 0 0 4px var(--action-soft); }
+.lk-add input { flex: 1; min-width: 0; min-height: 40px; border: 0; outline: none; background: transparent; font-size: 16px; }
+.lk-cats { display: flex; gap: 6px; flex-wrap: wrap; }
+.lk-cats .chip .num { color: var(--muted); font-weight: 500; margin-inline-start: 2px; }
+.lk-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 12px; }
+.lk {
+  display: flex; flex-direction: column; overflow: hidden; cursor: pointer;
+  background: var(--surface); border: 1px solid var(--line); border-radius: 16px; box-shadow: var(--shadow);
+  transition: border-color .15s, box-shadow .15s;
+}
+.lk:hover { border-color: color-mix(in srgb, var(--c) 45%, var(--line)); box-shadow: 0 6px 18px rgba(29, 26, 58, .09); }
+.lk-thumb {
+  position: relative; aspect-ratio: 16 / 9; display: grid; place-items: center;
+  background: color-mix(in srgb, var(--c) 14%, var(--sunken)); color: color-mix(in srgb, var(--c) 70%, var(--ink));
+  font: 800 34px/1 var(--display);
+}
+.lk-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+.lk-body { padding: 12px 14px 12px; display: flex; flex-direction: column; gap: 2px; flex: 1; }
+.lk-t { margin: 0; font-weight: 600; overflow-wrap: anywhere; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.lk-site { margin: 0; font-size: 12px; color: var(--muted); direction: ltr; text-align: end; }
+.lk-note { margin: 6px 0 0; font-size: 14px; color: var(--ink); white-space: pre-line; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+.lk-note::before { content: "بيساعد في: "; color: var(--muted); }
+.lk .meta { margin-top: auto; padding-top: 10px; }
+a.move { text-decoration: none; color: inherit; }
+a.move.go { color: var(--action); }
+.lk-prev { display: flex; gap: 12px; align-items: center; padding: 10px; border-radius: 14px; background: var(--canvas); }
+.lk-prev img { width: 96px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; flex: none; }
+.lk-prev b { display: block; font-size: 13px; }
+.lk-prev p { margin: 2px 0 0; font-size: 12px; color: var(--muted); display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+@media (max-width: 640px) {
+  .lk-grid { grid-template-columns: 1fr; }
+  .lk { flex-direction: row; }
+  .lk-thumb { width: 108px; aspect-ratio: auto; flex: none; font-size: 26px; }
+  .lk .btns .move { padding: 0 10px; }
+}
+
 /* دايرة خلّصه */
 .t-row, .row { --tick: 22px; }
 .t-row { display: flex; align-items: flex-start; gap: 10px; }
@@ -772,6 +816,8 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
     <symbol id="ic-logout" viewBox="0 0 24 24"><path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 8l-4 4 4 4M6 12h10"/></symbol>
     <symbol id="ic-share" viewBox="0 0 24 24"><circle cx="18" cy="5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="19" r="2.5"/><path d="m8.2 10.8 7.6-4.4M8.2 13.2l7.6 4.4"/></symbol>
     <symbol id="ic-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
+    <symbol id="ic-bookmark" viewBox="0 0 24 24"><path d="M6 3.5h12a1 1 0 0 1 1 1V21l-7-4.5L5 21V4.5a1 1 0 0 1 1-1z"/></symbol>
+    <symbol id="ic-external" viewBox="0 0 24 24"><path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5"/></symbol>
     <symbol id="ic-send" viewBox="0 0 24 24"><path d="M21 3 10 14M21 3l-7 18-4-7-7-4z"/></symbol>
     <symbol id="ic-user" viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 21a8 8 0 0 1 16 0"/></symbol>
     <symbol id="ic-flame" viewBox="0 0 24 24"><path d="M12 22c4 0 7-2.7 7-6.8 0-3.6-2.6-6.4-4.4-8.2-.4 2.3-1.6 3.6-2.6 4.1C12 8.4 11 5 8.5 2.5 8.5 7 5 9.6 5 15.2 5 19.3 8 22 12 22z"/></symbol>
@@ -856,6 +902,7 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
         <button data-view="agenda" aria-pressed="false" title="المواعيد (2)"><svg class="i"><use href="#ic-list"/></svg>المواعيد</button>
         <button data-view="month" aria-pressed="false" title="الشهر (3)"><svg class="i"><use href="#ic-month"/></svg>الشهر</button>
         <button data-view="stats" aria-pressed="false" title="الإحصائيات (4)"><svg class="i"><use href="#ic-chart"/></svg>الإحصائيات</button>
+        <button data-view="links" aria-pressed="false" title="المحفوظات (5)"><svg class="i"><use href="#ic-bookmark"/></svg>المحفوظات</button>
       </div>
     </div>
   </header>
@@ -943,6 +990,30 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
       <button type="button" class="danger" id="fDelete"><svg class="i"><use href="#ic-trash"/></svg>امسح</button>
       <button type="button" class="ghost" id="fCancel">إلغاء</button>
       <button class="primary" type="submit" value="save">احفظ</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- saved link -->
+<dialog id="linkDlg" aria-labelledby="lkDlgTitle">
+  <form class="dlg" method="dialog" id="linkForm" novalidate>
+    <h2 id="lkDlgTitle">احفظ لينك</h2>
+    <div class="lk-prev" id="lkPrev" hidden>
+      <img id="lkImg" alt="" referrerpolicy="no-referrer">
+      <div><b id="lkSite"></b><p id="lkDesc"></p></div>
+    </div>
+    <div class="field"><label for="lkUrl">اللينك</label><input id="lkUrl" type="url" dir="ltr" inputmode="url" placeholder="https://"></div>
+    <div class="field"><label for="lkTitle">اسمه</label><input id="lkTitle" type="text" maxlength="200" placeholder="بيتكتب لوحده لو الموقع سمح"></div>
+    <div class="field"><label for="lkNote">بيساعدني في إيه؟</label><textarea id="lkNote" maxlength="1000" placeholder="مثلاً: موكابات مجانية لبوستات لومة، أو شرح أنيميشن لوجو في After Effects"></textarea></div>
+    <div class="grid2">
+      <div class="field"><label for="lkCat">التصنيف</label><input id="lkCat" list="lkCats" maxlength="40" placeholder="مثلاً: إلهام تصميم"><datalist id="lkCats"></datalist></div>
+      <div class="field"><label for="lkWs">لمكان شغل معين؟</label><select id="lkWs"></select></div>
+    </div>
+    <p class="auth-err" id="lkErr" role="alert"></p>
+    <div class="actions">
+      <button type="button" class="danger" id="lkDelete" hidden><svg class="i"><use href="#ic-trash"/></svg>امسح</button>
+      <button type="button" class="ghost" id="lkCancel" style="margin-inline-start:auto">إلغاء</button>
+      <button class="primary" type="submit">احفظ</button>
     </div>
   </form>
 </dialog>
@@ -1119,14 +1190,15 @@ serverOk = IS_LOCAL;
 const sb = window.supabase.createClient(SB_URL, SB_KEY, { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } });
 let user = null, profile = null, inbox = [];
 // snap = آخر نسخة متأكدين إنها اتحفظت في السحابة (عشان نعرف إيه اللي اتغير)
-let snap = { tasks: {}, workspaces: {}, settings: null };
+let snap = { tasks: {}, workspaces: {}, links: {}, settings: null };
 let channel = null;
 
 // JSON بترتيب ثابت للمفاتيح (Postgres بيغير ترتيبها)
 const canon = v => Array.isArray(v) ? `[${v.map(canon).join(',')}]`
   : v && typeof v === 'object' ? `{${Object.keys(v).filter(k => v[k] !== undefined).sort().map(k => JSON.stringify(k) + ':' + canon(v[k])).join(',')}}`
   : JSON.stringify(v ?? null);
-const listOf = kind => kind === 'tasks' ? db.tasks : db.workspaces;
+const KINDS = ['workspaces', 'tasks', 'links'];
+const listOf = kind => (db[kind] ||= []);
 const cacheKey = () => `shoghli-cloud-${user.id}`;
 function writeCache() { try { localStorage.setItem(cacheKey(), JSON.stringify({ db, snap })); } catch {} }
 function readLocal() { try { return JSON.parse(localStorage.getItem('shoghli-data')); } catch { return null; } }
@@ -1177,14 +1249,15 @@ async function pull() {
   if (!user) return;
   setSync('saving');
   try {
-    const [t, w, s] = await Promise.all([
-      fetchAll('tasks'), fetchAll('workspaces'),
+    const [t, w, l, s] = await Promise.all([
+      fetchAll('tasks'), fetchAll('workspaces'), fetchAll('links'),
       sb.from('settings').select('data').maybeSingle().then(r => { if (r.error) throw r.error; return r.data; }),
     ]);
     pulled = true;
     if (!t.length && !w.length && !Object.keys(snap.tasks).length && !Object.keys(snap.workspaces).length) return firstImport();
     t.forEach(r => applyRow('tasks', r));
     w.forEach(r => applyRow('workspaces', r));
+    l.forEach(r => applyRow('links', r));
     sortWs();
     if (s) applySettings(s.data);
     migrate();
@@ -1203,8 +1276,8 @@ let pushing = false, pushAgain = false, pushTimer = null, pulled = false;
 async function push() {
   if (!user || !pulled) return; // ما نبعتش حاجة قبل ما نشوف اللي في السحابة
   if (pushing) { pushAgain = true; return; }
-  const rows = { workspaces: [], tasks: [] };
-  for (const kind of ['workspaces', 'tasks']) {
+  const rows = { workspaces: [], tasks: [], links: [] };
+  for (const kind of KINDS) {
     const ids = new Set();
     for (const x of listOf(kind)) {
       ids.add(x.id);
@@ -1215,11 +1288,11 @@ async function push() {
   }
   const sj = canon(db.settings || {});
   const settingsDirty = sj !== snap.settings;
-  if (!rows.tasks.length && !rows.workspaces.length && !settingsDirty) return setSync('ok');
+  if (!KINDS.some(k => rows[k].length) && !settingsDirty) return setSync('ok');
   pushing = true;
   setSync('saving');
   try {
-    for (const kind of ['workspaces', 'tasks']) {
+    for (const kind of KINDS) {
       for (let k = 0; k < rows[kind].length; k += 500) {
         const chunk = rows[kind].slice(k, k + 500);
         const { error } = await sb.from(kind).upsert(chunk.map(c => c.row));
@@ -1256,7 +1329,7 @@ async function firstImport() {
   if (IS_LOCAL) { try { const r = await fetch('/api/data?pre=1', { cache: 'no-store' }); if (r.ok) src = await r.json(); } catch {} }
   if (!src) src = readLocal();
   db = src && Array.isArray(src.tasks) && Array.isArray(src.workspaces) ? src : structuredClone(DEFAULT);
-  snap = { tasks: {}, workspaces: {}, settings: null };
+  snap = { tasks: {}, workspaces: {}, links: {}, settings: null };
   migrate();
   render();
   await push();
@@ -1283,6 +1356,7 @@ function subscribe() {
   channel = sb.channel(`sync-${user.id}`)
     .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks', filter: `user_id=eq.${user.id}` }, onRow('tasks'))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'workspaces', filter: `user_id=eq.${user.id}` }, onRow('workspaces'))
+    .on('postgres_changes', { event: '*', schema: 'public', table: 'links', filter: `user_id=eq.${user.id}` }, onRow('links'))
     .on('postgres_changes', { event: '*', schema: 'public', table: 'settings', filter: `user_id=eq.${user.id}` }, p => { if (p.new && applySettings(p.new.data)) soon(); })
     .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'inbox', filter: `owner=eq.${user.id}` }, p => {
       if (!inbox.some(x => x.id === p.new.id)) inbox.unshift(p.new);
@@ -1329,14 +1403,16 @@ async function startSession(u) {
   user = u;
   if (switched || !channel) {
     // جهاز جديد بيبدأ فاضي ويستنى السحابة، عشان ما يكتبش فوق بياناتك الحقيقية
-    db = { version: 1, workspaces: [], tasks: [] }; snap = { tasks: {}, workspaces: {}, settings: null };
+    db = { version: 1, workspaces: [], tasks: [] }; snap = { tasks: {}, workspaces: {}, links: {}, settings: null };
     pulled = false;
     try { const c = JSON.parse(localStorage.getItem(cacheKey())); if (c?.db) { db = c.db; snap = c.snap; } } catch {}
+    db.links ||= []; snap.links ||= {};
   }
   hideAuth();
   sortWs();
   render();
   await pull();
+  handleShare();
   subscribe();
   loadProfile();
   loadInbox();
@@ -1347,8 +1423,8 @@ async function load() {
   try { const s = JSON.parse(localStorage.getItem('shoghli-ui') || '{}'); Object.assign(ui, s, { day: null, q: '', month: null }); } catch {}
   applyTheme();
   const hash = location.hash.slice(1);
-  if (['board', 'agenda', 'month', 'stats', 'archive', 'inbox'].includes(hash)) ui.view = hash;
-  else if (!['board', 'agenda', 'month', 'stats'].includes(ui.view)) ui.view = 'board';
+  if (['board', 'agenda', 'month', 'stats', 'archive', 'inbox', 'links'].includes(hash)) ui.view = hash;
+  else if (!['board', 'agenda', 'month', 'stats', 'links'].includes(ui.view)) ui.view = 'board';
   const { data: { session } } = await sb.auth.getSession();
   document.body.classList.remove('booting');
   if (RECOVERY && session) return showAuth('newpass');
@@ -1607,7 +1683,8 @@ function render() {
   document.querySelectorAll('[data-view]').forEach(b => b.setAttribute('aria-pressed', b.dataset.view === ui.view));
   $('#archiveBtn').setAttribute('aria-pressed', ui.view === 'archive');
   $('#inboxBtn').setAttribute('aria-pressed', ui.view === 'inbox');
-  ({ board: renderBoard, agenda: renderAgenda, month: renderMonth, stats: renderStats, archive: renderArchive, inbox: renderInbox })[ui.view]();
+  ({ board: renderBoard, agenda: renderAgenda, month: renderMonth, stats: renderStats, archive: renderArchive, inbox: renderInbox, links: renderLinks })[ui.view]();
+  document.body.dataset.view = ui.view;
 }
 
 function renderSpaces() {
@@ -1980,6 +2057,132 @@ function bindChart(series, order) {
   });
 }
 
+/* ---------- المحفوظات: لينكات وفيديوهات ومواقع مفيدة للشغل ---------- */
+const LINK_CATS = ['إلهام تصميم', 'أدوات ومواقع', 'كورسات وشروحات', 'خطوط وموكابات', 'أفكار محتوى', 'دعم فني'];
+const firstUrl = s => (String(s || '').match(/https?:\/\/[^\s<>"']+/i) || [])[0] || '';
+const normUrl = s => { s = String(s || '').trim(); if (!s) return ''; if (!/^https?:\/\//i.test(s)) s = 'https://' + s; try { return new URL(s).href; } catch { return ''; } };
+const hostOf = u => { try { return new URL(u).hostname.replace(/^www\./, ''); } catch { return ''; } };
+const linkCats = () => [...new Set([...db.links.map(l => l.cat).filter(Boolean), ...LINK_CATS])];
+const matchLink = l => !ui.q || [l.title, l.note, l.cat, l.url, l.site].join(' ').toLowerCase().includes(ui.q.toLowerCase());
+
+function renderLinks() {
+  const pool = db.links.filter(l => (ui.ws === 'all' || l.ws === ui.ws) && matchLink(l));
+  const cats = [...new Set(pool.map(l => l.cat || 'من غير تصنيف'))];
+  if (ui.lcat && !cats.includes(ui.lcat)) ui.lcat = null;
+  const list = pool.filter(l => !ui.lcat || (l.cat || 'من غير تصنيف') === ui.lcat).sort((a, b) => (b.created || 0) - (a.created || 0));
+  const chip = (c, n) => `<button class="chip" data-lcat="${esc(c)}" aria-pressed="${(ui.lcat || '') === c}">${c ? esc(c) : 'الكل'} <span class="num">${n}</span></button>`;
+  const card = l => {
+    const w = l.ws ? wsOf(l.ws) : null;
+    return `<article class="lk" data-link="${l.id}" style="--c:${w ? w.color : 'var(--action)'}" tabindex="0">
+      <div class="lk-thumb">${l.image ? `<img src="${esc(l.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<span>${esc((l.site || hostOf(l.url) || '؟').charAt(0).toUpperCase())}</span></div>
+      <div class="lk-body">
+        <p class="lk-t">${esc(l.title || hostOf(l.url))}</p>
+        <p class="lk-site">${esc(l.site || hostOf(l.url))}</p>
+        ${l.note ? `<p class="lk-note">${esc(l.note)}</p>` : ''}
+        <div class="meta">
+          ${l.cat ? `<span class="mini">${esc(l.cat)}</span>` : ''}
+          ${w ? tagHtml(w) : ''}
+          <span class="btns">
+            <button class="move" data-lktask="${l.id}" title="اعمله تاسك">${icon('plus')}تاسك</button>
+            <a class="move go" href="${esc(l.url)}" target="_blank" rel="noopener noreferrer" data-lkopen="${l.id}">${icon('external')}افتح</a>
+          </span>
+        </div>
+      </div>
+    </article>`;
+  };
+  $('#main').innerHTML = `
+    <div class="links">
+      <form class="lk-add" id="lkQuickForm" autocomplete="off">
+        ${icon('bookmark')}
+        <label class="sr" for="lkQuick">الصق لينك</label>
+        <input id="lkQuick" type="text" dir="auto" placeholder="الصق لينك فيديو أو موقع واضغط Enter">
+        <button class="primary" type="submit">احفظ</button>
+      </form>
+      ${pool.length ? `<div class="lk-cats">${chip('', pool.length)}${cats.map(c => chip(c, pool.filter(l => (l.cat || 'من غير تصنيف') === c).length)).join('')}</div>` : ''}
+      ${list.length ? `<div class="lk-grid">${list.map(card).join('')}</div>`
+        : calm(ui.q ? 'مفيش حاجة بالاسم ده' : 'لسه ما حفظتش حاجة', ui.q ? 'جرب كلمة تانية.' : 'الصق أي لينك فوق. وعلى الموبايل: من إنستجرام أو تيك توك أو يوتيوب دوس «مشاركة» واختار «شغلي».', 'bookmark')}
+    </div>`;
+}
+
+let editingLink = null, unfurlSeq = 0;
+function fillLinkPreview(l) {
+  $('#lkPrev').hidden = !(l.image || l.desc);
+  $('#lkImg').hidden = !l.image;
+  if (l.image) $('#lkImg').src = l.image;
+  $('#lkSite').textContent = l.site || hostOf(l.url);
+  $('#lkDesc').textContent = l.desc || '';
+}
+function openLink(id, preset = {}) {
+  editingLink = id ? db.links.find(l => l.id === id) : null;
+  const l = editingLink || { url: '', title: '', note: '', cat: ui.lcat && ui.lcat !== 'من غير تصنيف' ? ui.lcat : '', ws: ui.ws !== 'all' ? ui.ws : '', ...preset };
+  $('#lkDlgTitle').textContent = editingLink ? 'تعديل اللينك' : 'احفظ لينك';
+  $('#lkUrl').value = l.url || '';
+  $('#lkTitle').value = l.title || '';
+  $('#lkNote').value = l.note || '';
+  $('#lkCat').value = l.cat || '';
+  $('#lkCats').innerHTML = linkCats().map(c => `<option value="${esc(c)}">`).join('');
+  $('#lkWs').innerHTML = `<option value="">كل الأماكن</option>` + db.workspaces.map(w => `<option value="${w.id}">${esc(w.name)}</option>`).join('');
+  $('#lkWs').value = l.ws || '';
+  $('#lkDelete').hidden = !editingLink;
+  $('#lkErr').textContent = '';
+  linkDraft = { image: l.image || '', site: l.site || '', desc: l.desc || '' };
+  fillLinkPreview({ ...linkDraft, url: l.url });
+  $('#linkDlg').showModal();
+  if (!editingLink && l.url) { unfurl(l.url); $('#lkNote').focus(); } else (l.url ? $('#lkNote') : $('#lkUrl')).focus();
+}
+let linkDraft = {};
+// نجيب اسم اللينك وصورته من السيرفر بتاعنا
+async function unfurl(raw) {
+  const url = normUrl(raw); if (!url) return;
+  const seq = ++unfurlSeq;
+  $('#lkSite').textContent = 'بيجيب بيانات اللينك…'; $('#lkPrev').hidden = false; $('#lkImg').hidden = true;
+  try {
+    const { data, error } = await sb.functions.invoke('unfurl', { body: { url } });
+    if (seq !== unfurlSeq || error || !data) throw error;
+    if (!$('#lkTitle').value.trim() && data.title) $('#lkTitle').value = data.title;
+    linkDraft = { image: data.image || '', site: data.site || hostOf(url), desc: data.description || '' };
+  } catch { if (seq === unfurlSeq) linkDraft = { image: '', site: hostOf(url), desc: '' }; }
+  if (seq === unfurlSeq) fillLinkPreview({ ...linkDraft, url });
+}
+$('#lkUrl').addEventListener('change', e => unfurl(e.target.value));
+$('#lkUrl').addEventListener('paste', () => setTimeout(() => unfurl($('#lkUrl').value), 0));
+$('#lkCancel').addEventListener('click', () => $('#linkDlg').close());
+$('#linkForm').addEventListener('submit', e => {
+  const url = normUrl($('#lkUrl').value);
+  if (!url) { e.preventDefault(); $('#lkErr').textContent = 'اكتب لينك صح، مثلاً https://youtube.com/…'; return $('#lkUrl').focus(); }
+  const fields = {
+    url, title: $('#lkTitle').value.trim(), note: $('#lkNote').value.trim(), cat: $('#lkCat').value.trim(), ws: $('#lkWs').value,
+    image: linkDraft.image, site: linkDraft.site || hostOf(url), desc: linkDraft.desc,
+  };
+  const dup = !editingLink && db.links.find(l => l.url === url);
+  if (editingLink) Object.assign(editingLink, fields);
+  else if (dup) Object.assign(dup, fields);
+  else db.links.push({ id: uid(), created: Date.now(), ...fields });
+  save(); if (ui.view !== 'links') setView('links'); else render();
+  toast(dup ? 'اللينك ده كان محفوظ، واتحدّث' : editingLink ? 'اتحفظ التعديل' : 'اتحفظ في المحفوظات');
+});
+$('#lkDelete').addEventListener('click', () => {
+  const l = editingLink, idx = db.links.indexOf(l);
+  db.links.splice(idx, 1); $('#linkDlg').close(); save(); render();
+  toast(`اتمسح "${l.title || hostOf(l.url)}"`, () => { db.links.splice(idx, 0, l); save(); render(); });
+});
+function linkToTask(id) {
+  const l = db.links.find(x => x.id === id); if (!l) return;
+  const t = { id: uid(), title: l.title || hostOf(l.url), notes: [l.note, l.url].filter(Boolean).join('\n'), ws: l.ws || db.workspaces[0]?.id, status: 'todo', due: '', time: '', prio: 0, repeat: '', checklist: [], created: Date.now(), order: Date.now() };
+  db.tasks.push(t); save(); render();
+  toast(`اتعمل تاسك "${t.title}" في «لسه»`, () => { db.tasks.splice(db.tasks.indexOf(t), 1); save(); render(); });
+}
+// مشاركة من تطبيق تاني (Share → شغلي) أو ?save=لينك
+function handleShare() {
+  const p = new URLSearchParams(location.search);
+  const raw = p.get('share_url') || firstUrl(p.get('share_text')) || firstUrl(p.get('share_title')) || p.get('save');
+  if (!raw && !p.has('share_text')) return;
+  history.replaceState(null, '', location.pathname + location.hash);
+  const title = (p.get('share_title') || '').trim();
+  ui.view = 'links'; render();
+  openLink(null, { url: normUrl(raw) || '', title: title && !/^https?:/i.test(title) ? title : '' });
+}
+
 /* ---------- inbox: تاسكات بعتهالك ناس من اللينك ---------- */
 const ago = ts => {
   const m = Math.round((Date.now() - new Date(ts)) / 6e4);
@@ -2160,7 +2363,7 @@ $('#addForm').addEventListener('submit', e => {
 
 // الموبايل: زرار + بيفتح الإضافة كلوح من تحت
 const closeAdd = () => document.body.classList.remove('adding');
-$('#fab').addEventListener('click', () => { document.body.classList.add('adding'); $('#addTitle').focus(); });
+$('#fab').addEventListener('click', () => { if (ui.view === 'links') return openLink(null); document.body.classList.add('adding'); $('#addTitle').focus(); });
 $('#scrim').addEventListener('click', closeAdd);
 $('#addForm').addEventListener('submit', () => setTimeout(closeAdd, 0));
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAdd(); });
@@ -2177,14 +2380,28 @@ $('#week').addEventListener('click', e => {
   if (ui.view !== 'board' && ui.view !== 'agenda') ui.view = 'board';
   render();
 });
-function setView(v) { ui.view = v; if (v === 'month' || v === 'stats' || v === 'inbox') ui.day = null; saveUi(); render(); }
+function setView(v) { ui.view = v; if (['month', 'stats', 'inbox', 'links'].includes(v)) ui.day = null; saveUi(); render(); }
 document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => setView(b.dataset.view)));
 $('#archiveBtn').addEventListener('click', () => setView(ui.view === 'archive' ? 'board' : 'archive'));
 $('#inboxBtn').addEventListener('click', () => setView(ui.view === 'inbox' ? 'board' : 'inbox'));
 $('#q').addEventListener('input', e => { ui.q = e.target.value.trim(); render(); });
 
 /* main area clicks */
+$('#main').addEventListener('submit', e => {
+  if (e.target.id !== 'lkQuickForm') return;
+  e.preventDefault();
+  const v = $('#lkQuick').value.trim();
+  openLink(null, { url: normUrl(firstUrl(v) || v) });
+});
 $('#main').addEventListener('click', e => {
+  const lc = e.target.closest('[data-lcat]');
+  if (lc) { ui.lcat = lc.dataset.lcat || null; return render(); }
+  const lt2 = e.target.closest('[data-lktask]');
+  if (lt2) return linkToTask(lt2.dataset.lktask);
+  const lo = e.target.closest('[data-lkopen]');
+  if (lo) { const l = db.links.find(x => x.id === lo.dataset.lkopen); if (l) { l.opened = Date.now(); save(); } return; }
+  const lk = e.target.closest('[data-link]');
+  if (lk) return openLink(lk.dataset.link);
   const tk = e.target.closest('[data-tick]');
   if (tk) { const t = db.tasks.find(x => x.id === tk.dataset.tick); return moveTask(t.id, t.status === 'done' ? 'todo' : 'done'); }
   const ct = e.target.closest('[data-coltab]');
@@ -2232,6 +2449,7 @@ $('#main').addEventListener('click', e => {
 });
 $('#main').addEventListener('keydown', e => {
   if (e.key === 'Enter' && e.target.matches('[data-id]:not(button)')) openTask(e.target.dataset.id);
+  if (e.key === 'Enter' && e.target.matches('article[data-link]')) openLink(e.target.dataset.link);
 });
 
 /* drag & drop: بين الأعمدة في اللوحة، وبين الأيام في الشهر */
@@ -2560,7 +2778,7 @@ document.addEventListener('keydown', e => {
   if (k === 'n' || e.key === 'ى') { e.preventDefault(); $('#addTitle').focus(); }
   else if (e.key === '/') { e.preventDefault(); $('#q').focus(); }
   else if (e.key === '?' || e.key === '؟') { e.preventDefault(); $('#keysDlg').showModal(); }
-  else if (['1', '2', '3', '4'].includes(e.key)) setView(['board', 'agenda', 'month', 'stats'][+e.key - 1]);
+  else if (['1', '2', '3', '4', '5'].includes(e.key)) setView(['board', 'agenda', 'month', 'stats', 'links'][+e.key - 1]);
 });
 
 // اليوم بيتغير لو البرنامج فضل مفتوح لبعد نص الليل
