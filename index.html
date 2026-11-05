@@ -1233,7 +1233,7 @@ a.move.go { color: var(--action); }
 
 <div class="toast" id="toast" role="status" aria-live="polite"><span id="toastMsg"></span><button id="toastUndo" hidden>تراجع</button></div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js" integrity="sha384-GFr3yTh5lJznCbZfpTtXnwboFsxqtTQoeTZCRHhE0579KrRmlCzen5AA8ohaB5ug" crossorigin="anonymous"></script>
 <script>
 /* ================= data ================= */
 const DEFAULT = {
@@ -1308,6 +1308,8 @@ async function fetchAll(table) {
 }
 
 function applyRow(kind, r) {
+  if (!SAFE_ID.test(String(r.id))) return false;
+  if (!r.deleted && !clean(kind, r.data)) return false;
   const list = listOf(kind);
   const i = list.findIndex(x => x.id === r.id);
   const local = i >= 0 ? list[i] : null;
@@ -1519,7 +1521,40 @@ async function load() {
   await startSession(session.user);
 }
 
+// أي بيانات جاية من نسخة احتياطية أو من السحابة بتتنضف الأول، عشان محدش يقدر يدخّل كود يشتغل جوه البرنامج
+const SAFE_ID = /^[\w-]{1,64}$/;
+const SAFE_COLOR = /^#[0-9a-f]{3,8}$/i;
+const SAFE_IMG = /^data:image\/(png|jpe?g|webp|gif);base64,[a-z0-9+/=]+$/i;
+const SAFE_HTTP = /^https?:\/\/[^\s"'<>`]+$/i;
+function clean(kind, x) {
+  if (!x || typeof x !== 'object' || !SAFE_ID.test(String(x.id))) return null;
+  if (kind === 'workspaces') {
+    if (!SAFE_COLOR.test(x.color || '')) x.color = '#6A6789';
+    if (x.logo && !SAFE_IMG.test(x.logo)) delete x.logo;
+    if (x.icon && !WS_ICONS.includes(x.icon)) x.icon = 'briefcase';
+  } else {
+    if (x.ws && !SAFE_ID.test(String(x.ws))) x.ws = '';
+  }
+  if (kind === 'tasks') {
+    if (!STATUS[x.status]) x.status = 'todo';
+    if (x.due && !/^\d{4}-\d{2}-\d{2}$/.test(x.due)) x.due = '';
+    if (x.time && !/^\d{2}:\d{2}$/.test(x.time)) x.time = '';
+    if (x.repeat && !REPEAT[x.repeat]) x.repeat = '';
+  }
+  if (kind === 'links') {
+    if (!SAFE_HTTP.test(x.url || '')) return null;
+    if (x.image && !SAFE_HTTP.test(x.image) && !SAFE_IMG.test(x.image)) x.image = '';
+  }
+  return x;
+}
+function cleanAll() {
+  for (const kind of KINDS) db[kind] = (db[kind] || []).map(x => clean(kind, x)).filter(Boolean);
+  const p = db.settings?.profile;
+  if (p && p.photo && !SAFE_IMG.test(p.photo)) p.photo = null;
+}
+
 function migrate() {
+  cleanAll();
   let changed = false;
   db.workspaces.forEach((w, i) => {
     const def = DEFAULT.workspaces.find(d => d.id === OLD_COLORS[w.color?.toUpperCase()]);
