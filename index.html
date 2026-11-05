@@ -33,7 +33,7 @@
   --side-2: #2C2760;
   --side-ink: #EEECFF;
   --side-muted: #A9A5D6;
-  --shadow: 0 1px 2px rgba(29, 26, 58, .06), 0 2px 6px rgba(29, 26, 58, .04);
+  --shadow: 0 0 0 transparent;
   --lift: 0 12px 32px rgba(29, 26, 58, .18);
   --display: "Alexandria", "IBM Plex Sans Arabic", "Segoe UI", sans-serif;
   --body: "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
@@ -45,7 +45,7 @@
     --action: #8B83FF; --action-soft: #2A2658; --action-ink: #120F2A;
     --late: #FF7A7F; --late-soft: #3A1A2A; --ok: #3DD6B5; --ok-soft: #173B3A;
     --side: #0F0D22; --side-2: #1C1940;
-    --shadow: 0 1px 2px rgba(0, 0, 0, .35); --lift: 0 12px 32px rgba(0, 0, 0, .55);
+    --shadow: 0 0 0 transparent; --lift: 0 12px 32px rgba(0, 0, 0, .55);
     color-scheme: dark;
   }
 }
@@ -54,7 +54,7 @@
   --action: #8B83FF; --action-soft: #2A2658; --action-ink: #120F2A;
   --late: #FF7A7F; --late-soft: #3A1A2A; --ok: #3DD6B5; --ok-soft: #173B3A;
   --side: #0F0D22; --side-2: #1C1940;
-  --shadow: 0 1px 2px rgba(0, 0, 0, .35); --lift: 0 12px 32px rgba(0, 0, 0, .55);
+  --shadow: 0 0 0 transparent; --lift: 0 12px 32px rgba(0, 0, 0, .55);
   color-scheme: dark;
 }
 
@@ -680,6 +680,23 @@ a.move.go { color: var(--action); }
   button:active, .card:active, .row:active { transform: scale(.97); }
   button, .card, .row { transition: transform .1s; }
 }
+
+/* الهوية: الأماكن كـ swatches زي كتالوج بانتون، والباقي هادي ومسطح */
+.card, .row, .lk { border-radius: 10px; }
+.day, .stat, .in-card { border-radius: 12px; }
+.tag, .due, .mini, .status-pill, .pill, .from, .chip { border-radius: 6px; }
+.card { box-shadow: inset 0 3px 0 var(--c); padding-top: 14px; }
+.card.done { box-shadow: inset 0 3px 0 var(--line); }
+.card:hover { box-shadow: inset 0 3px 0 var(--c), 0 6px 18px rgba(29, 26, 58, .08); }
+.row { box-shadow: inset -3px 0 0 var(--c); }
+.row .dotc { display: none; }
+.tag { background: transparent; padding: 0; color: var(--muted); font-weight: 600; }
+.tag .i { color: var(--c); }
+.space .tile { background: var(--c); color: var(--on, #fff); }
+.space .tile .i { stroke-width: 2.1; }
+.space[data-ws="all"] .tile { background: rgba(255, 255, 255, .12); }
+.me-ws .tile { background: var(--c); color: var(--on, #fff); }
+.lk-thumb { background: var(--c); color: var(--on, #fff); }
 
 /* desktop: أقل زحمة */
 @media (min-width: 981px) {
@@ -1730,6 +1747,8 @@ function parseQuick(raw) {
 
 /* ================= helpers ================= */
 const wsOf = id => db.workspaces.find(w => w.id === id) || { name: 'من غير مكان', color: '#8A96A3', icon: 'briefcase' };
+// لون الأيقونة فوق الـ swatch: أبيض على الغامق، وغامق على الفاتح
+const onColor = hex => { const m = /^#?([0-9a-f]{6})$/i.exec(hex || ''); if (!m) return '#fff'; const [r, g, b] = [0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16) / 255).map(v => v <= .03928 ? v / 12.92 : ((v + .055) / 1.055) ** 2.4); return .2126 * r + .7152 * g + .0722 * b > .3 ? '#1D1A3A' : '#fff'; };
 const wsIcon = w => w.logo ? `<img class="logo" src="${w.logo}" alt="">` : icon(w.icon || 'briefcase');
 const tagHtml = w => `<span class="tag" style="--c:${w.color}">${wsIcon(w)}${esc(w.name)}</span>`;
 const matchQ = t => !ui.q || (t.title + ' ' + (t.notes || '') + ' ' + (t.checklist || []).map(c => c.text).join(' ')).toLowerCase().includes(ui.q.toLowerCase());
@@ -1763,7 +1782,7 @@ function renderSpaces() {
   const open = ws => db.tasks.filter(t => !t.archived && t.status !== 'done' && (ws === 'all' || t.ws === ws)).length;
   const items = [{ id: 'all', name: 'كل الشغل', color: '', icon: 'all' }, ...db.workspaces];
   $('#spaces').innerHTML = items.map(w => `
-    <button class="space" data-ws="${w.id}" aria-pressed="${ui.ws === w.id}" ${w.color ? `style="--c:${w.color}"` : ''}>
+    <button class="space" data-ws="${w.id}" aria-pressed="${ui.ws === w.id}" ${w.color ? `style="--c:${w.color};--on:${onColor(w.color)}"` : ''}>
       <span class="tile">${wsIcon(w)}</span>
       <span class="name">${esc(w.name)}</span><span class="n">${open(w.id)}</span>
     </button>`).join('');
@@ -1941,7 +1960,7 @@ function renderMonth() {
       <div class="mcell ${d.getMonth() !== first.getMonth() ? 'out' : ''} ${k === T ? 'today' : ''} ${k < T ? 'past' : ''}" data-date="${k}"
         role="button" tabindex="-1" aria-label="${fmtDay(k)} ${fmtDate(k)}: ${list.length} تاسك">
         <span class="dn">${d.getDate()}</span>
-        ${shown.map(t => `<button class="mchip ${t.status === 'done' ? 'done' : ''} ${isLate(t) ? 'late' : ''}" draggable="true" data-id="${t.id}" style="--c:${wsOf(t.ws).color}" title="${esc(t.title)}${t.time ? ' · ' + fmtTime(t.time) : ''}"><span>${t.time ? fmtTime(t.time) + ' ' : ''}${esc(t.title)}</span></button>`).join('')}
+        ${shown.map(t => `<button class="mchip ${t.status === 'done' ? 'done' : ''} ${isLate(t) ? 'late' : ''}" draggable="true" data-id="${t.id}" style="--c:${wsOf(t.ws).color}" title="${esc(t.title)}${t.time ? '، ' + fmtTime(t.time) : ''}"><span>${t.time ? fmtTime(t.time) + ' ' : ''}${esc(t.title)}</span></button>`).join('')}
         ${list.length > 3 ? `<button class="mmore" data-moreday="${k}">و${list.length - 3} كمان</button>` : ''}
       </div>`);
   }
@@ -2169,7 +2188,7 @@ function openMe() {
     const ts = db.tasks.filter(t => t.ws === w.id);
     const open = ts.filter(t => !t.archived && t.status !== 'done').length;
     const done = ts.filter(t => t.status === 'done' && t.doneAt && iso(new Date(t.doneAt)).startsWith(month)).length;
-    return `<div class="me-ws" style="--c:${w.color}"><span class="tile">${wsIcon(w)}</span><b>${esc(w.name)}</b><span>${open} مفتوح · ${done} خلص الشهر ده</span></div>`;
+    return `<div class="me-ws" style="--c:${w.color};--on:${onColor(w.color)}"><span class="tile">${wsIcon(w)}</span><b>${esc(w.name)}</b><span>${open} مفتوح، ${done} خلص الشهر ده</span></div>`;
   }).join('');
   $('#meDlg').showModal();
 }
@@ -2202,7 +2221,7 @@ function renderLinks() {
   const chip = (c, n) => `<button class="chip" data-lcat="${esc(c)}" aria-pressed="${(ui.lcat || '') === c}">${c ? esc(c) : 'الكل'} <span class="num">${n}</span></button>`;
   const card = l => {
     const w = l.ws ? wsOf(l.ws) : null;
-    return `<article class="lk" data-link="${l.id}" style="--c:${w ? w.color : 'var(--action)'}" tabindex="0">
+    return `<article class="lk" data-link="${l.id}" style="--c:${w ? w.color : 'var(--action)'};--on:${w ? onColor(w.color) : '#fff'}" tabindex="0">
       <div class="lk-thumb">${l.image ? `<img src="${esc(l.image)}" alt="" loading="lazy" referrerpolicy="no-referrer" onerror="this.remove()">` : ''}<span>${esc((l.site || hostOf(l.url) || '؟').charAt(0).toUpperCase())}</span></div>
       <div class="lk-body">
         <p class="lk-t">${esc(l.title || hostOf(l.url))}</p>
