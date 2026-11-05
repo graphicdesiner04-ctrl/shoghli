@@ -1773,7 +1773,7 @@ function renderHello() {
   const late = pool.filter(isLate).length;
   const doneToday = db.tasks.filter(t => inWs(t) && t.status === 'done' && t.doneAt && iso(new Date(t.doneAt)) === T).length;
 
-  const first = (prof().name || '').trim().split(/s+/)[0];
+  const first = (prof().name || '').trim().split(/\s+/)[0];
   $('#hello').textContent = (now.getHours() < 12 ? 'صباح الفل' : 'مساء الفل') + (first ? ` يا ${first}` : '');
   const parts = [`${fmtLong(now)}.`];
   if (openToday) parts.push(`عندك <strong>${count(openToday, 'تاسك واحد', 'تاسكين', 'تاسكات')}</strong> النهارده`);
