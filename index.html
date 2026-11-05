@@ -584,6 +584,38 @@ dialog::backdrop { background: rgba(21, 19, 43, .5); }
   .mgrid { grid-template-rows: auto repeat(6, minmax(64px, auto)); }
   .mchip span { display: none; }
 }
+/* البروفايل واللوجوهات */
+.me {
+  display: flex; align-items: center; gap: 12px; padding: 8px; margin: -6px 0 -6px;
+  border: 0; border-radius: 14px; background: transparent; color: var(--side-ink); text-align: start;
+}
+.me:hover { background: rgba(255, 255, 255, .06); }
+.me-pic, .me-big {
+  flex: none; display: grid; place-items: center; overflow: hidden; border-radius: 50%;
+  background: var(--action); color: #fff; font: 700 16px/1 var(--display);
+}
+.me-pic { width: 44px; height: 44px; box-shadow: 0 0 0 2px var(--side), 0 0 0 4px var(--sun); }
+.me-pic img, .me-big img { width: 100%; height: 100%; object-fit: cover; }
+.me-txt { display: flex; flex-direction: column; min-width: 0; }
+.me-txt b { font: 700 15px/1.3 var(--display); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.me-txt small { font-size: 12px; color: var(--side-muted); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.me-head { display: flex; align-items: center; gap: 16px; }
+.me-big { width: 96px; height: 96px; font-size: 30px; box-shadow: 0 0 0 3px var(--surface), 0 0 0 6px var(--sun); }
+.me-head-txt { display: flex; flex-direction: column; align-items: flex-start; gap: 2px; min-width: 0; }
+.me-head-txt b { font: 700 20px/1.3 var(--display); }
+.me-head-txt small { color: var(--muted); }
+.me-head-txt .link { padding: 4px 0; cursor: pointer; color: var(--action); }
+.me-work { display: flex; flex-direction: column; gap: 6px; }
+.me-ws { display: flex; align-items: center; gap: 10px; padding: 8px 10px; border-radius: 12px; background: var(--canvas); }
+.me-ws .tile { width: 34px; height: 34px; border-radius: 10px; display: grid; place-items: center; background: color-mix(in srgb, var(--c) 16%, transparent); color: var(--c); flex: none; overflow: hidden; }
+.me-ws b { flex: 1; font-weight: 600; }
+.me-ws span:last-child { font-size: 13px; color: var(--muted); }
+img.logo { width: 100%; height: 100%; object-fit: contain; display: block; }
+.tile:has(img.logo) { background: #fff !important; padding: 3px; }
+.tag img.logo, .pill img.logo { width: 14px; height: 14px; border-radius: 3px; background: #fff; }
+.ws-logo { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+.ws-logo label { cursor: pointer; font-size: 14px; }
+
 /* المحفوظات */
 body[data-view="links"] .week, body[data-view="links"] .add-wrap { display: none !important; }
 .links { max-width: 1100px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
@@ -673,6 +705,11 @@ a.move.go { color: var(--action); }
   .space .tile { width: 28px; height: 28px; }
   .space .name { flex: none; }
   .side-foot { gap: 0; margin-inline-start: auto; }
+  .me { order: 2; margin: 0; padding: 2px; }
+  .me-txt { display: none; }
+  .me-pic { width: 34px; height: 34px; font-size: 13px; }
+  .me-head { flex-direction: column; text-align: center; }
+  .me-head-txt { align-items: center; }
   .side-btn { padding: 6px 8px; position: relative; }
   .side-btn .badge { position: absolute; top: 0; inset-inline-start: 0; min-width: 18px; line-height: 18px; font-size: 11px; padding: 0 4px; }
   .sync { display: none; }
@@ -863,6 +900,11 @@ a.move.go { color: var(--action); }
     <h1>شغلي</h1>
   </div>
 
+  <button class="me" id="meBtn" type="button" aria-label="بروفايلي">
+    <span class="me-pic"><img id="meImg" alt="" hidden><span id="meInit"></span></span>
+    <span class="me-txt"><b id="meName">بروفايلي</b><small id="meTitle">دوس عشان تكتب بياناتك</small></span>
+  </button>
+
   <div class="ring-card">
     <svg class="ring" viewBox="0 0 64 64" aria-hidden="true">
       <circle class="bg" cx="32" cy="32" r="26"/>
@@ -990,6 +1032,31 @@ a.move.go { color: var(--action); }
       <button type="button" class="danger" id="fDelete"><svg class="i"><use href="#ic-trash"/></svg>امسح</button>
       <button type="button" class="ghost" id="fCancel">إلغاء</button>
       <button class="primary" type="submit" value="save">احفظ</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- profile -->
+<dialog id="meDlg" aria-labelledby="meDlgTitle">
+  <form class="dlg" method="dialog" id="meForm">
+    <h2 id="meDlgTitle" class="sr">بروفايلي</h2>
+    <div class="me-head">
+      <span class="me-big"><img id="mePhoto" alt="صورتك" hidden><span id="meBigInit"></span></span>
+      <div class="me-head-txt">
+        <b id="meHeadName"></b>
+        <small id="meHeadTitle"></small>
+        <label class="link" for="meFile" role="button" tabindex="0">غيّر الصورة</label>
+        <input type="file" id="meFile" accept="image/*" hidden>
+      </div>
+    </div>
+    <div class="field"><label for="meNameIn">اسمك</label><input id="meNameIn" type="text" maxlength="60"></div>
+    <div class="field"><label for="meTitleIn">شغلتك</label><input id="meTitleIn" type="text" maxlength="80" placeholder="مثلاً: مصمم جرافيك ومهندس دعم فني"></div>
+    <div class="field"><label for="meBioIn">نبذة عنك</label><textarea id="meBioIn" maxlength="500"></textarea></div>
+    <h3><svg class="i"><use href="#ic-layers"/></svg>بشتغل في</h3>
+    <div class="me-work" id="meWork"></div>
+    <div class="actions">
+      <button type="button" class="ghost" id="meCancel" style="margin-inline-start:auto">إلغاء</button>
+      <button class="primary" type="submit">احفظ</button>
     </div>
   </form>
 </dialog>
@@ -1660,7 +1727,8 @@ function parseQuick(raw) {
 
 /* ================= helpers ================= */
 const wsOf = id => db.workspaces.find(w => w.id === id) || { name: 'من غير مكان', color: '#8A96A3', icon: 'briefcase' };
-const tagHtml = w => `<span class="tag" style="--c:${w.color}">${icon(w.icon || 'briefcase')}${esc(w.name)}</span>`;
+const wsIcon = w => w.logo ? `<img class="logo" src="${w.logo}" alt="">` : icon(w.icon || 'briefcase');
+const tagHtml = w => `<span class="tag" style="--c:${w.color}">${wsIcon(w)}${esc(w.name)}</span>`;
 const matchQ = t => !ui.q || (t.title + ' ' + (t.notes || '') + ' ' + (t.checklist || []).map(c => c.text).join(' ')).toLowerCase().includes(ui.q.toLowerCase());
 function visible(t) {
   if (t.archived) return false;
@@ -1677,6 +1745,7 @@ const inWs = t => ui.ws === 'all' || t.ws === ui.ws;
 /* ================= render ================= */
 function render() {
   renderSpaces();
+  renderMe();
   renderHello();
   renderWeek();
   renderAddWs();
@@ -1692,7 +1761,7 @@ function renderSpaces() {
   const items = [{ id: 'all', name: 'كل الشغل', color: '', icon: 'all' }, ...db.workspaces];
   $('#spaces').innerHTML = items.map(w => `
     <button class="space" data-ws="${w.id}" aria-pressed="${ui.ws === w.id}" ${w.color ? `style="--c:${w.color}"` : ''}>
-      <span class="tile">${icon(w.icon || 'briefcase')}</span>
+      <span class="tile">${wsIcon(w)}</span>
       <span class="name">${esc(w.name)}</span><span class="n">${open(w.id)}</span>
     </button>`).join('');
 }
@@ -1704,7 +1773,8 @@ function renderHello() {
   const late = pool.filter(isLate).length;
   const doneToday = db.tasks.filter(t => inWs(t) && t.status === 'done' && t.doneAt && iso(new Date(t.doneAt)) === T).length;
 
-  $('#hello').textContent = now.getHours() < 12 ? 'صباح الفل' : 'مساء الفل';
+  const first = (prof().name || '').trim().split(/s+/)[0];
+  $('#hello').textContent = (now.getHours() < 12 ? 'صباح الفل' : 'مساء الفل') + (first ? ` يا ${first}` : '');
   const parts = [`${fmtLong(now)}.`];
   if (openToday) parts.push(`عندك <strong>${count(openToday, 'تاسك واحد', 'تاسكين', 'تاسكات')}</strong> النهارده`);
   else parts.push('مفيش حاجة مستنياك النهارده');
@@ -1962,7 +2032,7 @@ function renderStats() {
           <table class="t">
             <thead><tr><th>المكان</th><th>مفتوح</th><th>متأخر</th><th>خلصت</th><th></th></tr></thead>
             <tbody>${wsRows.map(r => `<tr style="--c:${r.w.color}">
-              <td class="nm"><span class="tag" style="--c:${r.w.color}">${icon(r.w.icon || 'briefcase')}</span>${esc(r.w.name)}</td>
+              <td class="nm"><span class="tag" style="--c:${r.w.color}">${wsIcon(r.w)}</span>${esc(r.w.name)}</td>
               <td>${r.open}</td><td class="${r.late ? 'tl' : ''}">${r.late}</td><td>${r.month}</td>
               <td><div class="share"><i style="width:${r.month / maxMonth * 100}%"></i></div></td></tr>`).join('')}</tbody>
           </table>
@@ -1978,7 +2048,7 @@ function renderStats() {
               <div><div class="k">ليك بره</div><div class="v ${owedSum ? 'owed' : ''}">${money(owedSum)}</div></div>
             </div>
             ${owed.length ? owed.map(t => `<div class="mrow" style="--c:${wsOf(t.ws).color}">
-              <span class="tag" style="--c:${wsOf(t.ws).color}">${icon(wsOf(t.ws).icon || 'briefcase')}</span>
+              <span class="tag" style="--c:${wsOf(t.ws).color}">${wsIcon(wsOf(t.ws))}</span>
               <span class="t" data-open="${t.id}">${esc(t.title)}</span><span class="num">${money(t.price)}</span>
               <button class="move fin" data-paid="${t.id}">${icon('check')}اتقبض</button></div>`).join('') : '<p class="hint">كل اللي خلصته اتقبض.</p>'}
             ${pipeline ? `<p class="hint" style="margin-top:10px">وفيه شغل لسه ما خلصش قيمته ${money(pipeline)}.</p>` : ''}
@@ -2056,6 +2126,62 @@ function bindChart(series, order) {
     g.addEventListener('mouseleave', () => tip.classList.remove('show'));
   });
 }
+
+/* ---------- البروفايل ---------- */
+const prof = () => db.settings?.profile || {};
+const initials = n => (n || '').trim().split(/\s+/).slice(0, 2).map(w => w.charAt(0)).join('') || '؟';
+function setPic(img, init, photo, name) {
+  img.hidden = !photo; if (photo) img.src = photo;
+  init.hidden = !!photo; init.textContent = initials(name);
+}
+function renderMe() {
+  const p = prof();
+  setPic($('#meImg'), $('#meInit'), p.photo, p.name);
+  $('#meName').textContent = p.name || 'بروفايلي';
+  $('#meTitle').textContent = p.title || 'دوس عشان تكتب بياناتك';
+}
+// صورة مقصوصة مربع وصغيرة عشان تتزامن بسرعة
+async function shrinkImage(file, size, type = 'image/jpeg', square = true) {
+  const bmp = await createImageBitmap(file);
+  const c = document.createElement('canvas');
+  let sx = 0, sy = 0, sw = bmp.width, sh = bmp.height, w = size, h = size;
+  if (square) { const s = Math.min(sw, sh); sx = (sw - s) / 2; sy = (sh - s) / 2; sw = sh = s; }
+  else { const k = Math.min(1, size / Math.max(sw, sh)); w = Math.round(sw * k); h = Math.round(sh * k); }
+  c.width = w; c.height = h;
+  c.getContext('2d').drawImage(bmp, sx, sy, sw, sh, 0, 0, w, h);
+  return c.toDataURL(type, .85);
+}
+let mePhotoDraft = null;
+function openMe() {
+  const p = prof();
+  mePhotoDraft = p.photo || null;
+  setPic($('#mePhoto'), $('#meBigInit'), p.photo, p.name);
+  $('#meHeadName').textContent = p.name || 'اكتب اسمك';
+  $('#meHeadTitle').textContent = p.title || '';
+  $('#meNameIn').value = p.name || '';
+  $('#meTitleIn').value = p.title || '';
+  $('#meBioIn').value = p.bio || '';
+  const month = today().slice(0, 7);
+  $('#meWork').innerHTML = db.workspaces.map(w => {
+    const ts = db.tasks.filter(t => t.ws === w.id);
+    const open = ts.filter(t => !t.archived && t.status !== 'done').length;
+    const done = ts.filter(t => t.status === 'done' && t.doneAt && iso(new Date(t.doneAt)).startsWith(month)).length;
+    return `<div class="me-ws" style="--c:${w.color}"><span class="tile">${wsIcon(w)}</span><b>${esc(w.name)}</b><span>${open} مفتوح · ${done} خلص الشهر ده</span></div>`;
+  }).join('');
+  $('#meDlg').showModal();
+}
+$('#meBtn').addEventListener('click', openMe);
+$('#meCancel').addEventListener('click', () => $('#meDlg').close());
+$('#meFile').addEventListener('change', async e => {
+  const f = e.target.files[0]; if (!f) return;
+  try { mePhotoDraft = await shrinkImage(f, 320); setPic($('#mePhoto'), $('#meBigInit'), mePhotoDraft, ''); }
+  catch { toast('مقدرتش أفتح الصورة دي. جرب صورة JPG أو PNG.'); }
+  e.target.value = '';
+});
+$('#meForm').addEventListener('submit', () => {
+  db.settings = { ...(db.settings || {}), profile: { name: $('#meNameIn').value.trim(), title: $('#meTitleIn').value.trim(), bio: $('#meBioIn').value.trim(), photo: mePhotoDraft } };
+  save(); render(); toast('اتحفظ البروفايل');
+});
 
 /* ---------- المحفوظات: لينكات وفيديوهات ومواقع مفيدة للشغل ---------- */
 const LINK_CATS = ['إلهام تصميم', 'أدوات ومواقع', 'كورسات وشروحات', 'خطوط وموكابات', 'أفكار محتوى', 'دعم فني'];
@@ -2313,7 +2439,7 @@ function syncAddControls() {
 }
 function renderUnderstood() {
   const p = parsed, bits = [];
-  if (p.ws) { const w = wsOf(p.ws); bits.push(`<span class="pill ws" style="--c:${w.color}">${icon(w.icon)}${esc(w.name)}</span>`); }
+  if (p.ws) { const w = wsOf(p.ws); bits.push(`<span class="pill ws" style="--c:${w.color}">${wsIcon(w)}${esc(w.name)}</span>`); }
   if (p.due) bits.push(`<span class="pill">${icon('cal')}${whenText(p.due)}</span>`);
   if (p.time) bits.push(`<span class="pill">${icon('clock')}${fmtTime(p.time)}</span>`);
   if (p.repeat) bits.push(`<span class="pill">${icon('repeat')}${REPEAT[p.repeat]}</span>`);
@@ -2728,11 +2854,15 @@ function renderWsList() {
   $('#wsList').innerHTML = db.workspaces.map(w => `
     <div class="ws-card" data-wsid="${w.id}" style="--c:${w.color}">
       <div class="ws-row">
-        <span class="tile">${icon(w.icon || 'briefcase')}</span>
+        <span class="tile">${wsIcon(w)}</span>
         <label class="sr" for="wn-${w.id}">اسم المكان</label>
         <input id="wn-${w.id}" type="text" value="${esc(w.name)}">
         <input type="color" value="${w.color}" aria-label="لون ${esc(w.name)}">
         <button class="danger" data-wsdel="${w.id}" aria-label="امسح ${esc(w.name)}">${icon('trash')}</button>
+      </div>
+      <div class="ws-logo">
+        <label class="ghost" style="min-height:36px">${icon('upload')}${w.logo ? 'غيّر اللوجو' : 'ارفع لوجو'}<input type="file" accept="image/*" data-wslogo="${w.id}" hidden></label>
+        ${w.logo ? `<button class="link" data-wsnologo="${w.id}">شيل اللوجو وارجع للأيقونة</button>` : '<span class="hint">أو اختار أيقونة من تحت</span>'}
       </div>
       <div class="icons" role="group" aria-label="أيقونة ${esc(w.name)}">
         ${WS_ICONS.map(ic => `<button data-icon="${ic}" aria-pressed="${(w.icon || 'briefcase') === ic}" aria-label="${ic}">${icon(ic)}</button>`).join('')}
@@ -2742,11 +2872,20 @@ function renderWsList() {
 $('#wsBtn').addEventListener('click', () => { renderWsList(); $('#wsDlg').showModal(); });
 $('#wsList').addEventListener('input', e => {
   const card = e.target.closest('[data-wsid]'); const w = db.workspaces.find(x => x.id === card.dataset.wsid);
+  if (e.target.type === 'file') return;
   if (e.target.type === 'color') { w.color = e.target.value; card.style.setProperty('--c', w.color); }
   else w.name = e.target.value;
   save(); render();
 });
+$('#wsList').addEventListener('change', async e => {
+  const id = e.target.dataset.wslogo; if (!id || !e.target.files[0]) return;
+  const w = db.workspaces.find(x => x.id === id);
+  try { w.logo = await shrinkImage(e.target.files[0], 160, 'image/png', false); save(); renderWsList(); render(); toast(`اتحط لوجو ${w.name}`); }
+  catch { toast('مقدرتش أفتح الصورة دي. جرب PNG أو JPG.'); }
+});
 $('#wsList').addEventListener('click', e => {
+  const nl = e.target.closest('[data-wsnologo]');
+  if (nl) { delete db.workspaces.find(x => x.id === nl.dataset.wsnologo).logo; save(); renderWsList(); render(); return; }
   const ib = e.target.closest('[data-icon]');
   if (ib) {
     const card = ib.closest('[data-wsid]'), w = db.workspaces.find(x => x.id === card.dataset.wsid);
