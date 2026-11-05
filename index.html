@@ -19,15 +19,15 @@
   --surface: #FFFFFF;
   --sunken: #E9E7F4;
   --ink: #1D1A3A;
-  --muted: #6A6789;
+  --muted: #5F5C7E;
   --line: #DFDCEE;
   --action: #4A3FD1;
   --action-soft: #ECEAFD;
   --action-ink: #FFFFFF;
   --sun: #FFB547;
-  --late: #E5484D;
+  --late: #C4262C;
   --late-soft: #FDECED;
-  --ok: #0F8F79;
+  --ok: #0B7A67;
   --ok-soft: #E3F6F1;
   --side: #221E4A;
   --side-2: #2C2760;
@@ -731,7 +731,10 @@ a.move.go { color: var(--action); }
   /* الإضافة: خانة الكتابة بس، والباقي يظهر لما تدوس عليها */
   .add:not(:focus-within) > :not(input[type="text"]):not(.plus) { display: none; }
   .add:not(:focus-within) .plus { display: grid; }
-  .move { min-height: 40px; padding: 0 12px; }
+  .move { min-height: 44px; padding: 0 12px; }
+  .chip, .link, .ghost { min-height: 44px; }
+  .icons button { width: 44px; height: 44px; }
+  .t-row, .row { --tick: 26px; }
   .week { display: flex; overflow-x: auto; padding: 12px 12px 0; gap: 8px; scroll-snap-type: x proximity; scrollbar-width: none; }
   .day { flex: 0 0 96px; min-height: 70px; scroll-snap-align: start; }
   .add-wrap { margin: 12px 12px 0; }
@@ -920,10 +923,10 @@ a.move.go { color: var(--action); }
 
   <div class="side-foot">
     <div class="sync" id="sync" data-s="ok" role="status"><i></i><span id="syncTxt">متزامن</span></div>
-    <button class="side-btn" id="inboxBtn" aria-pressed="false"><svg class="i"><use href="#ic-inbox"/></svg><span class="label">الوارد</span><span class="badge" id="inboxBadge"></span></button>
-    <button class="side-btn" id="archiveBtn" aria-pressed="false"><svg class="i"><use href="#ic-archive"/></svg><span class="label">الأرشيف</span></button>
-    <button class="side-btn" id="wsBtn"><svg class="i"><use href="#ic-layers"/></svg><span class="label">عدّل الأماكن</span></button>
-    <button class="side-btn" id="menuBtn" aria-label="الإعدادات"><svg class="i"><use href="#ic-gear"/></svg><span class="label">الإعدادات</span></button>
+    <button class="side-btn" id="inboxBtn" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#ic-inbox"/></svg><span class="label">الوارد</span><span class="badge" id="inboxBadge"></span></button>
+    <button class="side-btn" id="archiveBtn" aria-pressed="false"><svg class="i" aria-hidden="true"><use href="#ic-archive"/></svg><span class="label">الأرشيف</span></button>
+    <button class="side-btn" id="wsBtn"><svg class="i" aria-hidden="true"><use href="#ic-layers"/></svg><span class="label">عدّل الأماكن</span></button>
+    <button class="side-btn" id="menuBtn" aria-label="الإعدادات"><svg class="i" aria-hidden="true"><use href="#ic-gear"/></svg><span class="label">الإعدادات</span></button>
   </div>
 </aside>
 
@@ -935,16 +938,16 @@ a.move.go { color: var(--action); }
     </div>
     <div class="tools">
       <label class="search">
-        <svg class="i"><use href="#ic-search"/></svg>
+        <svg class="i" aria-hidden="true"><use href="#ic-search"/></svg>
         <span class="sr">دوّر في التاسكات</span>
         <input id="q" type="search" placeholder="دوّر…">
       </label>
       <div class="seg" role="group" aria-label="طريقة العرض">
-        <button data-view="board" aria-pressed="true" title="اللوحة (1)"><svg class="i"><use href="#ic-board"/></svg>اللوحة</button>
-        <button data-view="agenda" aria-pressed="false" title="المواعيد (2)"><svg class="i"><use href="#ic-list"/></svg>المواعيد</button>
-        <button data-view="month" aria-pressed="false" title="الشهر (3)"><svg class="i"><use href="#ic-month"/></svg>الشهر</button>
-        <button data-view="stats" aria-pressed="false" title="الإحصائيات (4)"><svg class="i"><use href="#ic-chart"/></svg>الإحصائيات</button>
-        <button data-view="links" aria-pressed="false" title="المحفوظات (5)"><svg class="i"><use href="#ic-bookmark"/></svg>المحفوظات</button>
+        <button data-view="board" aria-pressed="true" title="اللوحة (1)"><svg class="i" aria-hidden="true"><use href="#ic-board"/></svg>اللوحة</button>
+        <button data-view="agenda" aria-pressed="false" title="المواعيد (2)"><svg class="i" aria-hidden="true"><use href="#ic-list"/></svg>المواعيد</button>
+        <button data-view="month" aria-pressed="false" title="الشهر (3)"><svg class="i" aria-hidden="true"><use href="#ic-month"/></svg>الشهر</button>
+        <button data-view="stats" aria-pressed="false" title="الإحصائيات (4)"><svg class="i" aria-hidden="true"><use href="#ic-chart"/></svg>الإحصائيات</button>
+        <button data-view="links" aria-pressed="false" title="المحفوظات (5)"><svg class="i" aria-hidden="true"><use href="#ic-bookmark"/></svg>المحفوظات</button>
       </div>
     </div>
   </header>
@@ -953,7 +956,7 @@ a.move.go { color: var(--action); }
 
   <div class="add-wrap">
     <form class="add" id="addForm" autocomplete="off">
-      <span class="plus" aria-hidden="true"><svg class="i"><use href="#ic-plus"/></svg></span>
+      <span class="plus" aria-hidden="true"><svg class="i" aria-hidden="true"><use href="#ic-plus"/></svg></span>
       <label class="sr" for="addTitle">تاسك جديد</label>
       <input id="addTitle" type="text" placeholder="اكتب طبيعي: بوستر لومة بكرة الساعة 3 مستعجل">
       <label class="sr" for="addWs">المكان</label>
@@ -971,7 +974,7 @@ a.move.go { color: var(--action); }
 
   <main id="main"></main>
 </div>
-<button class="fab" id="fab" type="button" aria-label="تاسك جديد"><svg class="i"><use href="#ic-plus"/></svg></button>
+<button class="fab" id="fab" type="button" aria-label="تاسك جديد"><svg class="i" aria-hidden="true"><use href="#ic-plus"/></svg></button>
 <div class="scrim" id="scrim"></div>
 
 <!-- edit task -->
@@ -985,10 +988,10 @@ a.move.go { color: var(--action); }
         <textarea id="fNotes" placeholder="تفاصيل، لينكات، مقاسات التصميم، رقم التذكرة…"></textarea>
       </div>
       <div>
-        <div class="cl-h"><svg class="i"><use href="#ic-checklist"/></svg>الخطوات<span class="num" id="clCount"></span></div>
+        <div class="cl-h"><svg class="i" aria-hidden="true"><use href="#ic-checklist"/></svg>الخطوات<span class="num" id="clCount"></span></div>
         <div class="cl" id="clList"></div>
         <div class="cl-add">
-          <svg class="i"><use href="#ic-plus"/></svg>
+          <svg class="i" aria-hidden="true"><use href="#ic-plus"/></svg>
           <label class="sr" for="clNew">خطوة جديدة</label>
           <input id="clNew" type="text" placeholder="ضيف خطوة واضغط Enter (مثلاً: أول درافت، تعديلات العميل، التسليم)">
         </div>
@@ -1029,7 +1032,7 @@ a.move.go { color: var(--action); }
     </div>
     <div class="task-foot">
       <p class="hint" id="fInfo"></p>
-      <button type="button" class="danger" id="fDelete"><svg class="i"><use href="#ic-trash"/></svg>امسح</button>
+      <button type="button" class="danger" id="fDelete"><svg class="i" aria-hidden="true"><use href="#ic-trash"/></svg>امسح</button>
       <button type="button" class="ghost" id="fCancel">إلغاء</button>
       <button class="primary" type="submit" value="save">احفظ</button>
     </div>
@@ -1052,7 +1055,7 @@ a.move.go { color: var(--action); }
     <div class="field"><label for="meNameIn">اسمك</label><input id="meNameIn" type="text" maxlength="60"></div>
     <div class="field"><label for="meTitleIn">شغلتك</label><input id="meTitleIn" type="text" maxlength="80" placeholder="مثلاً: مصمم جرافيك ومهندس دعم فني"></div>
     <div class="field"><label for="meBioIn">نبذة عنك</label><textarea id="meBioIn" maxlength="500"></textarea></div>
-    <h3><svg class="i"><use href="#ic-layers"/></svg>بشتغل في</h3>
+    <h3><svg class="i" aria-hidden="true"><use href="#ic-layers"/></svg>بشتغل في</h3>
     <div class="me-work" id="meWork"></div>
     <div class="actions">
       <button type="button" class="ghost" id="meCancel" style="margin-inline-start:auto">إلغاء</button>
@@ -1078,7 +1081,7 @@ a.move.go { color: var(--action); }
     </div>
     <p class="auth-err" id="lkErr" role="alert"></p>
     <div class="actions">
-      <button type="button" class="danger" id="lkDelete" hidden><svg class="i"><use href="#ic-trash"/></svg>امسح</button>
+      <button type="button" class="danger" id="lkDelete" hidden><svg class="i" aria-hidden="true"><use href="#ic-trash"/></svg>امسح</button>
       <button type="button" class="ghost" id="lkCancel" style="margin-inline-start:auto">إلغاء</button>
       <button class="primary" type="submit">احفظ</button>
     </div>
@@ -1112,27 +1115,27 @@ a.move.go { color: var(--action); }
   <div class="dlg">
     <h2>الإعدادات</h2>
 
-    <h3><svg class="i"><use href="#ic-sun"/></svg>الشكل</h3>
+    <h3><svg class="i" aria-hidden="true"><use href="#ic-sun"/></svg>الشكل</h3>
     <div class="theme-seg" role="group" aria-label="الثيم">
-      <button class="ghost" data-theme-set="auto"><svg class="i"><use href="#ic-auto"/></svg>زي الويندوز</button>
-      <button class="ghost" data-theme-set="light"><svg class="i"><use href="#ic-sun"/></svg>فاتح</button>
-      <button class="ghost" data-theme-set="dark"><svg class="i"><use href="#ic-moon"/></svg>غامق</button>
+      <button class="ghost" data-theme-set="auto"><svg class="i" aria-hidden="true"><use href="#ic-auto"/></svg>زي الويندوز</button>
+      <button class="ghost" data-theme-set="light"><svg class="i" aria-hidden="true"><use href="#ic-sun"/></svg>فاتح</button>
+      <button class="ghost" data-theme-set="dark"><svg class="i" aria-hidden="true"><use href="#ic-moon"/></svg>غامق</button>
     </div>
 
-    <h3><svg class="i"><use href="#ic-send"/></svg>لينك «ابعتلي تاسك»</h3>
+    <h3><svg class="i" aria-hidden="true"><use href="#ic-send"/></svg>لينك «ابعتلي تاسك»</h3>
     <p class="hint">ابعت اللينك ده لأي حد (مديرك، عميل، زميل). يكتب التاسك واسمه، ويوصلك في «الوارد» توافق عليه أو ترفضه. اللي بيبعت مش بيشوف تاسكاتك.</p>
     <div class="field"><label for="pName">اسمك زي ما هيظهر في الصفحة</label><input id="pName" type="text" maxlength="60" placeholder="مثلاً: أحمد"></div>
     <div class="share-box">
       <label class="sr" for="shareLink">اللينك</label>
       <input id="shareLink" type="text" readonly>
-      <button class="ghost" id="copyLink" type="button"><svg class="i"><use href="#ic-copy"/></svg>انسخ</button>
-      <button class="ghost" id="shareBtn" type="button"><svg class="i"><use href="#ic-share"/></svg>شارك</button>
+      <button class="ghost" id="copyLink" type="button"><svg class="i" aria-hidden="true"><use href="#ic-copy"/></svg>انسخ</button>
+      <button class="ghost" id="shareBtn" type="button"><svg class="i" aria-hidden="true"><use href="#ic-share"/></svg>شارك</button>
     </div>
     <button class="link" id="newLink" type="button" style="align-self:flex-start">اعمل لينك جديد (القديم هيبطل يشتغل)</button>
 
-    <button class="ghost" id="installBtn" type="button" hidden><svg class="i"><use href="#ic-download"/></svg>نزّل شغلي كبرنامج على الجهاز ده</button>
+    <button class="ghost" id="installBtn" type="button" hidden><svg class="i" aria-hidden="true"><use href="#ic-download"/></svg>نزّل شغلي كبرنامج على الجهاز ده</button>
 
-    <h3><svg class="i"><use href="#ic-bell"/></svg>الإشعارات</h3>
+    <h3><svg class="i" aria-hidden="true"><use href="#ic-bell"/></svg>الإشعارات</h3>
     <p class="hint" id="nPhoneHint" hidden>إشعارات الويندوز شغالة من اللاب. إشعارات الموبايل جاية في التحديث الجاي.</p>
     <div id="nDesk">
     <label class="check"><input type="checkbox" id="nOn"> ابعتلي إشعارات على الويندوز</label>
@@ -1159,24 +1162,24 @@ a.move.go { color: var(--action); }
         </select>
       </div>
     </div>
-    <button class="ghost" id="nTest"><svg class="i"><use href="#ic-bell"/></svg>ابعت إشعار تجربة</button>
+    <button class="ghost" id="nTest"><svg class="i" aria-hidden="true"><use href="#ic-bell"/></svg>ابعت إشعار تجربة</button>
     <p class="hint">الإشعارات بتشتغل طول ما الجهاز مفتوح، حتى لو قفلت شباك شغلي، وبتجيلك كمان لما حد يبعتلك تاسك. لو مش ظاهرة، اتأكد إن "Do not disturb" مقفول في الويندوز.</p>
     </div>
 
-    <h3><svg class="i"><use href="#ic-user"/></svg>حسابك</h3>
+    <h3><svg class="i" aria-hidden="true"><use href="#ic-user"/></svg>حسابك</h3>
     <p class="hint" id="acctTxt"></p>
-    <button class="ghost" id="logoutBtn" type="button"><svg class="i"><use href="#ic-logout"/></svg>اخرج من الحساب على الجهاز ده</button>
+    <button class="ghost" id="logoutBtn" type="button"><svg class="i" aria-hidden="true"><use href="#ic-logout"/></svg>اخرج من الحساب على الجهاز ده</button>
 
-    <h3><svg class="i"><use href="#ic-archive"/></svg>بياناتك</h3>
+    <h3><svg class="i" aria-hidden="true"><use href="#ic-archive"/></svg>بياناتك</h3>
     <div class="menu-list">
-      <button class="ghost" id="importLocalBtn" type="button" hidden><svg class="i"><use href="#ic-upload"/></svg>ضيف التاسكات القديمة اللي على اللاب ده للحساب</button>
-      <button class="ghost" id="exportBtn"><svg class="i"><use href="#ic-download"/></svg>نزّل نسخة احتياطية</button>
-      <button class="ghost" id="importBtn"><svg class="i"><use href="#ic-upload"/></svg>رجّع من نسخة احتياطية</button>
+      <button class="ghost" id="importLocalBtn" type="button" hidden><svg class="i" aria-hidden="true"><use href="#ic-upload"/></svg>ضيف التاسكات القديمة اللي على اللاب ده للحساب</button>
+      <button class="ghost" id="exportBtn"><svg class="i" aria-hidden="true"><use href="#ic-download"/></svg>نزّل نسخة احتياطية</button>
+      <button class="ghost" id="importBtn"><svg class="i" aria-hidden="true"><use href="#ic-upload"/></svg>رجّع من نسخة احتياطية</button>
       <input type="file" id="importFile" accept="application/json" hidden>
     </div>
     <p class="hint" id="storeHint"></p>
     <div class="actions">
-      <button class="ghost" id="keysBtn"><svg class="i"><use href="#ic-keyboard"/></svg>الاختصارات</button>
+      <button class="ghost" id="keysBtn"><svg class="i" aria-hidden="true"><use href="#ic-keyboard"/></svg>الاختصارات</button>
       <button class="primary" id="menuClose" style="margin-inline-start:auto">تمام</button>
     </div>
   </div>
@@ -1194,7 +1197,7 @@ a.move.go { color: var(--action); }
       <span><kbd>Esc</kbd></span><span>اقفل أي شباك مفتوح</span>
       <span><kbd>?</kbd></span><span>الصفحة دي</span>
     </div>
-    <h3><svg class="i"><use href="#ic-plus"/></svg>الإضافة الذكية بتفهم</h3>
+    <h3><svg class="i" aria-hidden="true"><use href="#ic-plus"/></svg>الإضافة الذكية بتفهم</h3>
     <p class="hint">المكان: اكتب اسمه (لومة، السنترال…). الميعاد: النهارده، بكرة، بعد بكرة، يوم الخميس، بعد 3 أيام، الأسبوع الجاي، 28/10. الساعة: الساعة 3، 5م، 10ص، 14:30. الأهمية: مهم، مستعجل، أو ! و !!. التكرار: كل يوم، كل أسبوع، كل شهر، كل سبت.</p>
     <div class="actions"><button class="primary" id="keysClose" style="margin-inline-start:auto">تمام</button></div>
   </div>
@@ -1206,7 +1209,7 @@ a.move.go { color: var(--action); }
     <h2>أماكن الشغل</h2>
     <p class="hint">كل مكان بتشتغل فيه ليه لون وأيقونة، والتاسكات بتاخدهم.</p>
     <div id="wsList" class="menu-list"></div>
-    <button class="ghost" id="wsAdd"><svg class="i"><use href="#ic-plus"/></svg>ضيف مكان جديد</button>
+    <button class="ghost" id="wsAdd"><svg class="i" aria-hidden="true"><use href="#ic-plus"/></svg>ضيف مكان جديد</button>
     <div class="actions"><button class="primary" id="wsDone" style="margin-inline-start:auto">تمام</button></div>
   </div>
 </dialog>
